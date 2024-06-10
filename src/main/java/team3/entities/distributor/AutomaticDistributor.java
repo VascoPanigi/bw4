@@ -6,23 +6,23 @@ import jakarta.persistence.Entity;
 
 public class AutomaticDistributor extends Distributor{
 
-    private Boolean inService;
+    private Boolean in_service;
 
     public AutomaticDistributor() {
 
     }
 
     public AutomaticDistributor(Boolean inService) {
-        this.inService = inService;
+        this.in_service = inService;
 
     }
 
-    public Boolean getInService() {
-        return inService;
+    public Boolean getIn_service() {
+        return in_service;
     }
 
-    public void setInService(Boolean inService) {
-        this.inService = inService;
+    public void setIn_service(Boolean in_service) {
+        this.in_service = in_service;
     }
 
 

@@ -1,10 +1,8 @@
 package team3.entities.card;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import team3.entities.membership.Membership;
+import team3.entities.user.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,6 +19,11 @@ public class Card {
 
     @OneToMany(mappedBy = "card")
     private List<Membership> memberships;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+
+    private User user;
 
 
     public Card() {
