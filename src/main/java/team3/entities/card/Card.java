@@ -22,4 +22,11 @@ public class Card {
     @OneToMany(mappedBy = "card")
     private List<Membership> memberships;
 
+
+    public Card() {
+    }
+
+    public Card(LocalDate expiration_date) {
+        this.expiration_date = expiration_date;
+    }
 }
