@@ -1,4 +1,4 @@
-package VascoPanigi;
+package team3;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
