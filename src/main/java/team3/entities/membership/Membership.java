@@ -15,6 +15,7 @@ public class Membership {
     @GeneratedValue
     private UUID membership_id;
 
+    @Enumerated(EnumType.STRING)
     private MembershipPeriodicity periodicity; // Settimana, Mensile
     private LocalDate starting_date;
     private LocalDate ending_date;

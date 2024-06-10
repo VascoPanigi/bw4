@@ -1,5 +1,4 @@
-package team3.user;
-
+package team3.entities.user;
 
 
 public class User {
@@ -8,5 +7,4 @@ public class User {
 
     private String surname;
 
-//private Card card;
 }
