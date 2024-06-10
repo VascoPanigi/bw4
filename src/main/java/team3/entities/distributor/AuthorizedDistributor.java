@@ -1,4 +1,4 @@
-package team3.distributor;
+package team3.entities.distributor;
 
 import jakarta.persistence.Entity;
 
