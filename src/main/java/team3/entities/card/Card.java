@@ -2,7 +2,7 @@ package team3.entities.card;
 
 import jakarta.persistence.*;
 import team3.entities.membership.Membership;
-import team3.entities.user.User;
+import team3.entities.user.UserClass;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,8 +22,7 @@ public class Card {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-
-    private User user;
+    private UserClass user;
 
 
     public Card() {
