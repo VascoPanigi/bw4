@@ -1,6 +1,7 @@
 package team3.entities.travel;
+
 import jakarta.persistence.*;
-import transportation.TransportationType;
+import team3.entities.transportation.TransportationType;
 
 @Entity
 @Table(name = "travel")
@@ -11,25 +12,26 @@ public class Travel {
     private String terminus;
     private TransportationType transportationType;
 
-    public Travel (int number, int duration, String startingPoint, String terminus, TransportationType transportationType) {
+    public Travel(int number, int duration, String startingPoint, String terminus, TransportationType transportationType) {
         this.number = number;
         this.duration = duration;
         this.startingPoint = startingPoint;
         this.terminus = terminus;
         this.transportationType = transportationType;
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getNumber(){
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(int number){
+    public void setNumber(int number) {
         this.number = number;
     }
 
     @ManyToOne
-    public TransportationType getTransportationType (){
+    public TransportationType getTransportationType() {
         return transportationType;
     }
 
@@ -44,7 +46,8 @@ public class Travel {
     public void setDuration(int duration) {
         this.duration = duration;
     }
-    public String getStartingPoint(){
+
+    public String getStartingPoint() {
         return startingPoint;
     }
 
@@ -59,5 +62,5 @@ public class Travel {
     public void setTerminus(String terminus) {
         this.terminus = terminus;
     }
-    
+
 }
