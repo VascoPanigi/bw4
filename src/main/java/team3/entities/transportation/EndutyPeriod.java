@@ -1,25 +1,25 @@
-package transportation;
+package team3.entities.transportation;
+
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "maintenancePeriod")
-public class MaintenancePeriod {
-
+@Table(name = "EndutyPeriod")
+public class EndutyPeriod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @OneToOne
     @JoinColumn(name = "transportation_id")
-
     private Transportation transportation;
 
     private LocalDate startingDate;
     private LocalDate endingDate;
-
 
     public int getId() {
         return id;

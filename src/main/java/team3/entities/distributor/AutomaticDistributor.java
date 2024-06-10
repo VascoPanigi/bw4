@@ -1,8 +1,7 @@
-package team3.distributor;
+package team3.entities.distributor;
 
 import jakarta.persistence.Entity;
 
-import java.util.UUID;
 @Entity
 
 public class AutomaticDistributor extends Distributor{

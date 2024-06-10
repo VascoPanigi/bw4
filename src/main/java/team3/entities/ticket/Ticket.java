@@ -1,7 +1,7 @@
-package ticket;
+package team3.entities.ticket;
 
 import jakarta.persistence.*;
-import transportation.Transportation;
+import team3.entities.transportation.Transportation;
 import java.time.LocalDate;
 
 

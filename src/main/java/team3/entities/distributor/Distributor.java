@@ -1,9 +1,7 @@
-package team3.distributor;
+package team3.entities.distributor;
 
 import jakarta.persistence.*;
-import ticket.Ticket;
 
-import java.util.List;
 import java.util.UUID;
 @Entity
 @Table(name= "distributor")

@@ -1,10 +1,10 @@
-package transportation;
+package team3.entities.transportation;
 
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "transportation")
+@Table(name = "team3/entities/transportation")
 public class Transportation {
 
     @Id
@@ -19,10 +19,10 @@ public class Transportation {
     @Enumerated(EnumType.STRING)
     private TransportationState state;
 
-    @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "team3/entities/transportation", cascade = CascadeType.ALL)
     private EndutyPeriod endutyPeriod;
 
-    @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "team3/entities/transportation", cascade = CascadeType.ALL)
     private MaintenancePeriod maintenancePeriod;
 
 
