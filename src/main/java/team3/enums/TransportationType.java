@@ -1,5 +1,5 @@
 package team3.enums;
 
-public enum TransportationType{
+public enum TransportationType {
     TRAM, BUS
 }
