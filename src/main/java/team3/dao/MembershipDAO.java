@@ -2,12 +2,14 @@ package team3.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team3.entities.card.Card;
 import team3.entities.membership.Membership;
 import team3.enums.MembershipPeriodicity;
 import team3.exceptions.NotFoundException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class MembershipDAO {
@@ -57,7 +59,13 @@ public class MembershipDAO {
         em.persist(membership);
         transaction.commit();
         System.out.println("The membership has been created: " + membership.getMembership_id());
+    }
 
+    public List<Membership> searchByTimeInterval(LocalDate start_date, LocalDate ending_date) {
+        TypedQuery<Membership> membershipTypedQuery = em.createNamedQuery("searchByTimeInterval", Membership.class);
+        membershipTypedQuery.setParameter("start_date", start_date);
+        membershipTypedQuery.setParameter("ending_date", ending_date);
+        return membershipTypedQuery.getResultList();
     }
 
 }

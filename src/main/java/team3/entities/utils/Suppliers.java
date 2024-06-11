@@ -42,7 +42,7 @@ public class Suppliers {
         MembershipPeriodicity[] periocityValues = MembershipPeriodicity.values();
         MembershipPeriodicity periodicity = periocityValues[random.nextInt(periocityValues.length)];
 
-        LocalDate randomDate = Suppliers.randomDateSupplier(LocalDate.of(2024, 1, 1), LocalDate.now()).get();
+        LocalDate randomDate = Suppliers.randomDateSupplier(LocalDate.of(2020, 1, 1), LocalDate.now()).get();
 
         // generate ending date based on periodicity
         LocalDate endingDate = switch (periodicity) {
