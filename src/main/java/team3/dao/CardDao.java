@@ -36,4 +36,13 @@ public class CardDao {
         transaction.commit();
         System.out.println("The card with id: " + found.getCard_id() + ", has been eliminated from our system!");
     }
+
+    public void renovateCard(Card card) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        card.setExpiration_date(card.getExpiration_date().plusYears(5));
+        em.persist(card);
+        transaction.commit();
+        System.out.println("The card has now expiration date: " + card.getExpiration_date());
+    }
 }

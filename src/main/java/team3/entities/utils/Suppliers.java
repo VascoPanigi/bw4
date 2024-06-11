@@ -31,8 +31,8 @@ public class Suppliers {
 
 //        String[] fullname = fkr.gameOfThrones().character().split(" ");
 
-        String name = fullname[0];
-        String surname = fullname[1];
+        String name = fullname[0].toLowerCase();
+        String surname = fullname[1].toLowerCase();
 
         return new UserClass(name, surname);
     };
@@ -91,5 +91,22 @@ public class Suppliers {
         }
 
     }
+
+    public static void linkCardStartingFromUser(UserClass user, CardDao cd, EntityManager em) {
+        EntityTransaction transaction = em.getTransaction();
+
+        try {
+            Card newCard = new Card(LocalDate.now().plusYears(1));
+            user.setCard(newCard);
+            newCard.setUser(user);
+            cd.save(newCard);
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
 
 }

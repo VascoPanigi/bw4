@@ -2,6 +2,7 @@ package team3.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team3.entities.user.UserClass;
 import team3.exceptions.NotFoundException;
 
@@ -38,5 +39,11 @@ public class UserDao {
         System.out.println("The user: " + found.getName() + ", has been eliminated from our system!");
     }
 
+    public UserClass findUserByNameAndSurname(String name, String surname) {
+        TypedQuery<UserClass> userQuery = em.createNamedQuery("findUserByNameAndSurname", UserClass.class);
+        userQuery.setParameter("name", name);
+        userQuery.setParameter("surname", surname);
+        return userQuery.getSingleResult();
+    }
 
 }
