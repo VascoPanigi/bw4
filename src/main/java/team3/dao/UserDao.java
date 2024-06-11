@@ -23,7 +23,6 @@ public class UserDao {
         System.out.println("The user: " + user.getName() + ", has been added.");
     }
 
-
     public UserClass findById(UUID userId) {
         UserClass user = em.find(UserClass.class, userId);
         if (userId == null) throw new NotFoundException(userId);
@@ -45,5 +44,6 @@ public class UserDao {
         userQuery.setParameter("surname", surname);
         return userQuery.getSingleResult();
     }
+
 
 }

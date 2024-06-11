@@ -154,13 +154,6 @@ public class Application {
                     case 2:
                         manageDistributor();
                         break;
-//                        System.out.println("inserisci nome");
-//                        String name = scanner.nextLine();
-//                        System.out.println();
-//                        System.out.println("inserisci cognome");
-//                        String surname = scanner.nextLine();
-//                        UserClass user = ud.findUserByNameAndSurname(name, surname);
-//                        System.out.println("belandi" + user);
                     default:
                         System.out.println("Invalid choice, try again.");
                         break;
@@ -203,7 +196,7 @@ public class Application {
         System.out.println("Insert your surname: ");
         String surname = scanner.nextLine().toLowerCase();
         System.out.println();
-        
+
         EntityTransaction transaction = em.getTransaction();
         try {
             UserClass newUser = new UserClass(name, surname);
