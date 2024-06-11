@@ -1,15 +1,18 @@
 package team3.entities.transportation;
 
-
 import jakarta.persistence.*;
+import team3.enums.TransportationState;
+import team3.enums.TransportationType;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "transportation")
 public class Transportation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     private TransportationType type;
@@ -26,12 +29,11 @@ public class Transportation {
     private MaintenancePeriod maintenancePeriod;
 
 
-
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

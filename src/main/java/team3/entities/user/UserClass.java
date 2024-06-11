@@ -1,45 +1,41 @@
 package team3.entities.user;
 
-
 import jakarta.persistence.*;
-
 import team3.entities.card.Card;
 
 import java.util.UUID;
 
 @Entity
-
-public class User {
-
+public class UserClass {
     @Id
     @GeneratedValue
-
     private UUID user_id;
 
     private String name;
-
     private String surname;
 
-@OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Card card;
 
-public User() {
 
-}
-
-
-    public User(String name, String surname) {
+    public UserClass(String name, String surname) {
         this.name = name;
         this.surname = surname;
-
     }
 
-    public String getName() {
-        return name;
+    public UserClass() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public UUID getUser_id() {
+        return user_id;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 
     public String getSurname() {
@@ -50,11 +46,11 @@ public User() {
         this.surname = surname;
     }
 
-    public Card getCard() {
-        return card;
+    public String getName() {
+        return name;
     }
 
-    public void setCard(Card card) {
-        this.card = card;
+    public void setName(String name) {
+        this.name = name;
     }
 }

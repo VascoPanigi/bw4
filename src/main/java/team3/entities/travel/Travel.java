@@ -1,7 +1,7 @@
 package team3.entities.travel;
 
 import jakarta.persistence.*;
-import team3.entities.transportation.TransportationType;
+import team3.enums.TransportationType;
 
 @Entity
 @Table(name = "travel")
@@ -10,6 +10,7 @@ public class Travel {
     private int duration;
     private String startingPoint;
     private String terminus;
+    @Enumerated(EnumType.STRING)
     private TransportationType transportationType;
 
     public Travel(int number, int duration, String startingPoint, String terminus, TransportationType transportationType) {
@@ -28,11 +29,6 @@ public class Travel {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    @ManyToOne
-    public TransportationType getTransportationType() {
-        return transportationType;
     }
 
     public void setTransportationType(TransportationType transportationType) {

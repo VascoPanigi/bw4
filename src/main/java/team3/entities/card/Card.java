@@ -2,7 +2,7 @@ package team3.entities.card;
 
 import jakarta.persistence.*;
 import team3.entities.membership.Membership;
-import team3.entities.user.User;
+import team3.entities.user.UserClass;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,19 +17,38 @@ public class Card {
 
     private LocalDate expiration_date;
 
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private List<Membership> memberships;
 
     @OneToOne
     @JoinColumn(name = "user_id")
-
-    private User user;
+    private UserClass user;
 
 
     public Card() {
     }
 
     public Card(LocalDate expiration_date) {
+        this.expiration_date = expiration_date;
+    }
+    
+    public UUID getCard_id() {
+        return card_id;
+    }
+
+    public UserClass getUser() {
+        return user;
+    }
+
+    public void setUser(UserClass user) {
+        this.user = user;
+    }
+
+    public LocalDate getExpiration_date() {
+        return expiration_date;
+    }
+
+    public void setExpiration_date(LocalDate expiration_date) {
         this.expiration_date = expiration_date;
     }
 }
