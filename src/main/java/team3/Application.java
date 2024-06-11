@@ -21,11 +21,10 @@ public class Application {
     private static final CardDao cd = new CardDao(em);
 
     public static void manageDistributor() {
-        //chiedere il nome
-        // TODO.6 - query ricerca per nome e cognome
         while (true) {
             try {
-
+                // richiesta dati per cercare user nel database
+                System.out.println();
                 System.out.println("Hello, please insert your name: ");
                 System.out.println("If you wanna exit, type exit");
                 String name = scanner.nextLine().toLowerCase();
@@ -40,6 +39,7 @@ public class Application {
 
                 System.out.println(user);
 
+                //check sulla card dell'utente
                 if (user.getCard() == null) {
                     System.out.println("It seems that you don't have a card.");
                     System.out.println("Do you want to create one?");
@@ -64,11 +64,12 @@ public class Application {
                     }
                 }
 
-                // una volta che ci troviamo qui, siamo sicuri al 100% che abbiamo sia carta che user
+                // una volta che ci troviamo qui, siamo sicuri al 100% che abbiamo sia card attiva che user
                 System.out.println("Which kind of membership do you wish to purchase? ");
                 System.out.println("1-weekly, 2-monthly");
                 int periodicity = Integer.parseInt(scanner.nextLine());
 
+                // generazione membership a seconda della periodicity
                 switch (periodicity) {
                     case 1:
                         md.addMembershipToCard(user.getCard(), MembershipPeriodicity.WEEKLY);
@@ -195,7 +196,6 @@ public class Application {
     public static void createUserFromInput() {
         // controllare il tipo dell-input
 
-
         System.out.println("Insert your name: ");
         String name = scanner.nextLine().toLowerCase();
         System.out.println();
@@ -203,8 +203,7 @@ public class Application {
         System.out.println("Insert your surname: ");
         String surname = scanner.nextLine().toLowerCase();
         System.out.println();
-
-
+        
         EntityTransaction transaction = em.getTransaction();
         try {
             UserClass newUser = new UserClass(name, surname);
