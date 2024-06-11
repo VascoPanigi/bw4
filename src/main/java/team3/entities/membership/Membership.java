@@ -21,7 +21,7 @@ public class Membership {
     private LocalDate ending_date;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "card_id")
     private Card card;
 
     public Membership(MembershipPeriodicity periodicity, LocalDate starting_date, LocalDate ending_date) {
@@ -67,6 +67,8 @@ public class Membership {
         return card;
     }
 
-
+    public void setCard(Card card) {
+        this.card = card;
+    }
 }
 

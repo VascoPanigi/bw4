@@ -1,9 +1,6 @@
 package team3.entities.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import team3.entities.card.Card;
 
 import java.util.UUID;
@@ -17,7 +14,7 @@ public class UserClass {
     private String name;
     private String surname;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Card card;
 
 
@@ -35,6 +32,10 @@ public class UserClass {
 
     public Card getCard() {
         return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 
     public String getSurname() {
