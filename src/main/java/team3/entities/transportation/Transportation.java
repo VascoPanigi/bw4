@@ -1,15 +1,18 @@
 package team3.entities.transportation;
 
-
 import jakarta.persistence.*;
+import team3.enums.TransportationState;
+import team3.enums.TransportationType;
+
+import java.util.UUID;
 
 @Entity
-@Table(name = "team3/entities/transportation")
+@Table(name = "transportation")
 public class Transportation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     private TransportationType type;
@@ -19,19 +22,18 @@ public class Transportation {
     @Enumerated(EnumType.STRING)
     private TransportationState state;
 
-    @OneToOne(mappedBy = "team3/entities/transportation", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
     private EndutyPeriod endutyPeriod;
 
-    @OneToOne(mappedBy = "team3/entities/transportation", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
     private MaintenancePeriod maintenancePeriod;
 
 
-
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

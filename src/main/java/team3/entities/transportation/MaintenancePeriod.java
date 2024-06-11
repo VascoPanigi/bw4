@@ -1,6 +1,7 @@
 package team3.entities.transportation;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
