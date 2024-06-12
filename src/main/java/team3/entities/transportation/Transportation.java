@@ -11,7 +11,7 @@ import java.util.UUID;
 public class Transportation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     @Enumerated(EnumType.STRING)
@@ -23,7 +23,7 @@ public class Transportation {
     private TransportationState state;
 
     @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
-    private EndutyPeriod endutyPeriod;
+    private DutyPeriod endutyPeriod;
 
     @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
     private MaintenancePeriod maintenancePeriod;
@@ -61,11 +61,11 @@ public class Transportation {
         this.state = state;
     }
 
-    public EndutyPeriod getEndutyPeriod() {
+    public DutyPeriod getEndutyPeriod() {
         return endutyPeriod;
     }
 
-    public void setEndutyPeriod(EndutyPeriod endutyPeriod) {
+    public void setEndutyPeriod(DutyPeriod endutyPeriod) {
         this.endutyPeriod = endutyPeriod;
     }
 

@@ -2,16 +2,17 @@ package team3.entities.ticket;
 
 import jakarta.persistence.*;
 import team3.entities.transportation.Transportation;
-import java.time.LocalDate;
 
+import java.time.LocalDate;
+import java.util.UUID;
 
 
 @Entity
-@Table (name = "Tickets")
+@Table(name = "Tickets")
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ticket_id;
+    @GeneratedValue
+    private UUID ticket_id;
 
     private LocalDate issueDate;
 
@@ -20,11 +21,11 @@ public class Ticket {
     private Transportation transportation;
 
 
-    public int getTicket_id() {
+    public UUID getTicket_id() {
         return ticket_id;
     }
 
-    public void setTicket_id(int ticket_id) {
+    public void setTicket_id(UUID ticket_id) {
         this.ticket_id = ticket_id;
     }
 

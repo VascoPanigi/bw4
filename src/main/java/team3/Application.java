@@ -110,17 +110,6 @@ public class Application {
     }
 
     public static void main(String[] args) {
-
-
-        //TODO.1 - SWITCH per menu
-        //TODO.2 - creazione utente
-        //TODO.3 - creare sistema biglietteria. Check su biglietteria - se è in servizio o meno. Far inserire il nome e cognome all-utente. verificare se ha la carta o no. se ce l'ha
-        // verificare che non sia scaduta. Se è tutto okay procedere con la procedura - selezionare tipo di abbonamento e
-        // aggiungerlo alla carta dello user
-        //TODO.4 - EXTRA' aggiungere zone e fare un check al momento della vidimazione del biglietto. un mezzo fa una tratta specifica
-        // in una zona specifica.
-
-
         System.out.println("Welcome to our system!");
         System.out.println();
 

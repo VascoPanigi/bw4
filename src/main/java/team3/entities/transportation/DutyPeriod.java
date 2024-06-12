@@ -4,14 +4,15 @@ package team3.entities.transportation;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
-@Table(name = "EndutyPeriod")
-public class EndutyPeriod {
+@Table(name = "DutyPeriod")
+public class DutyPeriod {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue
+    private UUID id;
 
 
     @OneToOne
@@ -21,11 +22,11 @@ public class EndutyPeriod {
     private LocalDate startingDate;
     private LocalDate endingDate;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
