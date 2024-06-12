@@ -11,9 +11,7 @@ import java.time.LocalDate;
 
 
 @Entity
-
-@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.isValid = :isValid ")
-
+@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.isValid = :isValid")
 @Table(name = "Tickets")
 public class Ticket extends TravelDocument {
     private boolean isValid;

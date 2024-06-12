@@ -3,7 +3,6 @@ package team3.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
-import team3.entities.ticket.Ticket;
 import team3.entities.transportation.Transportation;
 import team3.enums.TransportationState;
 import team3.exceptions.NotFoundException;
