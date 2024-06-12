@@ -68,4 +68,12 @@ public class MembershipDAO {
         return membershipTypedQuery.getResultList();
     }
 
+    public List<Membership> searchById(UUID card_id) {
+        TypedQuery<Membership> searchByIdQuery = em.createNamedQuery("searchById", Membership.class);
+        searchByIdQuery.setParameter("card_id", card_id);
+        return searchByIdQuery.getResultList();
+
+
+    }
+
 }
