@@ -1,28 +1,26 @@
 package team3.entities.distributor;
 
 import jakarta.persistence.*;
+import team3.enums.DistributorTypes;
 
 import java.util.UUID;
+
 @Entity
-@Table(name= "distributor")
+@Table(name = "distributor")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-
-public  abstract class Distributor {
-
+public abstract class Distributor {
     @Id
     @GeneratedValue
 
-  private UUID id;
+    private UUID id;
+    private DistributorTypes type;
 
-   //private List<Ticket> ticketList;
 
-
-    public UUID getId() {
-        return id;
+    public Distributor() {
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public Distributor(DistributorTypes type) {
+        this.type = type;
     }
 
 //    public List<Ticket> getTicketList() {
@@ -33,12 +31,15 @@ public  abstract class Distributor {
 //        this.ticketList = ticketList;
 //    }
 
-    public Distributor() {
-
+    public UUID getId() {
+        return id;
     }
 
-    public Distributor(UUID id) {
-        this.id = id;
+    public DistributorTypes getType() {
+        return type;
+    }
 
+    public void setType(DistributorTypes type) {
+        this.type = type;
     }
 }

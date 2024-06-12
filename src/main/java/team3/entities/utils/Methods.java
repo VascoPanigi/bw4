@@ -5,14 +5,17 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import team3.dao.CardDao;
+import team3.dao.DistributorDAO;
 import team3.dao.MembershipDAO;
 import team3.dao.UserDao;
+import team3.entities.distributor.Distributor;
+import team3.entities.travel_document.Membership;
 import team3.entities.user.UserClass;
 import team3.enums.MembershipPeriodicity;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Methods {
@@ -22,6 +25,7 @@ public class Methods {
     private static final UserDao ud = new UserDao(em);
     private static final MembershipDAO md = new MembershipDAO(em);
     private static final CardDao cd = new CardDao(em);
+    private static final DistributorDAO dd = new DistributorDAO(em);
 
     public static void manageDistributor() {
         while (true) {
@@ -125,7 +129,12 @@ public class Methods {
                     continue;
                 }
 
-                md.searchByTimeInterval(start_date, ending_date).forEach(System.out::println);
+                List<Membership> results = md.searchByTimeInterval(start_date, ending_date);
+                if (results.isEmpty()) {
+                    System.out.println("No memberships found within the given date range.");
+                } else {
+                    results.forEach(System.out::println);
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter numeric values.");
             } catch (DateTimeException e) {
@@ -194,42 +203,52 @@ public class Methods {
     }
 
     public static void App() {
-        System.out.println("Welcome to our system!");
-        System.out.println();
 
 
-        while (true) {
-            System.out.println("Which operation do you wish to perform?");
-            System.out.println("1-Create a new User, 2-Buy a membership");
-            System.out.println("Type 0 to exit.");
-
-            try {
-                int userChoice = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (userChoice) {
-                    case 0:
-                        System.out.println("See you!");
-                        scanner.close();
-                        return;
-                    case 1:
-                        Suppliers.createUserFromInput(scanner, em, ud);
-                        break;
-                    case 2:
-                        manageDistributor();
-                        break;
-                    case 3:
-                        searchByTimeInterval();
-                        break;
-                    default:
-                        System.out.println("Invalid choice, try again.");
-                        break;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-                scanner.nextLine();
-            }
+        for (int i = 0; i < 20; i++) {
+            Distributor newDistributor = Suppliers.distributorSupplier.get();
+            dd.save(newDistributor);
+            System.out.println("YIPPIEE");
         }
+
+
+//        System.out.println("Welcome to our system!");
+//        System.out.println();
+//
+//
+//        while (true) {
+//            System.out.println("Which operation do you wish to perform?");
+//            System.out.println("1-Create a new User, 2-Buy a membership");
+//            System.out.println("Type 0 to exit.");
+//
+//            try {
+//                int userChoice = scanner.nextInt();
+//                scanner.nextLine();
+//
+//                switch (userChoice) {
+//                    case 0:
+//                        System.out.println("See you!");
+//                        scanner.close();
+//                        return;
+//                    case 1:
+//                        Suppliers.createUserFromInput(scanner, em, ud);
+//                        break;
+//                    case 2:
+//                        manageDistributor();
+//                        break;
+//                    case 3:
+//                        searchByTimeInterval();
+//                        break;
+//                    default:
+//                        System.out.println("Invalid choice, try again.");
+//                        break;
+//                }
+//            } catch (InputMismatchException e) {
+//                System.out.println("Invalid input. Please enter a valid number.");
+//                scanner.nextLine();
+//            }
+//        }
+
 
 //        UserClass gabibbo = new UserClass("gabibbo", "scotti");
 //        ud.save(gabibbo);

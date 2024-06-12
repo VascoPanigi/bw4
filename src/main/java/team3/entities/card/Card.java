@@ -1,7 +1,7 @@
 package team3.entities.card;
 
 import jakarta.persistence.*;
-import team3.entities.membership.Membership;
+import team3.entities.travel_document.Membership;
 import team3.entities.user.UserClass;
 
 import java.time.LocalDate;
@@ -31,7 +31,7 @@ public class Card {
     public Card(LocalDate expiration_date) {
         this.expiration_date = expiration_date;
     }
-    
+
     public UUID getCard_id() {
         return card_id;
     }

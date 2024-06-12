@@ -10,8 +10,8 @@ import java.util.UUID;
 public class Travel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID travelID;
+    @GeneratedValue
+    private UUID id;
 
     private int duration;
     private String startingPoint;
@@ -20,13 +20,16 @@ public class Travel {
     @Enumerated(EnumType.STRING)
     private TransportationType transportationType;
 
-    public Travel(int duration, String startingPoint, String terminus, TransportationType transportationType) {
+    public Travel(int duration, String startingPoint, String terminal, TransportationType transportationType) {
         this.duration = duration;
         this.startingPoint = startingPoint;
         this.terminal = terminal;
         this.transportationType = transportationType;
     }
 
+    public Travel() {
+
+    }
 
     public void setTransportationType(TransportationType transportationType) {
         this.transportationType = transportationType;

@@ -4,8 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import team3.entities.card.Card;
-import team3.entities.membership.Membership;
-import team3.entities.user.UserClass;
+import team3.entities.travel_document.Membership;
 import team3.enums.MembershipPeriodicity;
 import team3.exceptions.NotFoundException;
 
@@ -26,7 +25,7 @@ public class MembershipDAO {
         transaction.begin();
         em.persist(membership);
         transaction.commit();
-        System.out.println("The membership: " + membership.getMembership_id() + ", has been added.");
+        System.out.println("The membership: " + membership.getId() + ", has been added.");
     }
 
     public Membership findById(UUID membershipId) {
@@ -41,7 +40,7 @@ public class MembershipDAO {
         transaction.begin();
         em.remove(found);
         transaction.commit();
-        System.out.println("The membership: " + found.getMembership_id() + ", has been eliminated from our system!");
+        System.out.println("The membership: " + found.getPeriodicity() + ", has been eliminated from our system!");
     }
 
     public void addMembershipToCard(Card card, MembershipPeriodicity mp) {
@@ -51,15 +50,15 @@ public class MembershipDAO {
 
         switch (mp) {
             case mp.MONTHLY ->
-                    membership = new Membership(LocalDate.now(), LocalDate.now().plusDays(30), MembershipPeriodicity.MONTHLY);
+                    membership = new Membership(LocalDate.now(), LocalDate.now().plusDays(30), MembershipPeriodicity.MONTHLY, LocalDate.now());
             case mp.WEEKLY ->
-                    membership = new Membership(LocalDate.now(), LocalDate.now().plusDays(7), MembershipPeriodicity.WEEKLY);
+                    membership = new Membership(LocalDate.now(), LocalDate.now().plusDays(7), MembershipPeriodicity.WEEKLY, LocalDate.now());
         }
         transaction.begin();
         membership.setCard(card);
         em.persist(membership);
         transaction.commit();
-        System.out.println("The membership has been created: " + membership.getMembership_id());
+        System.out.println("The membership has been created: " + membership.getId());
     }
 
     public List<Membership> searchByTimeInterval(LocalDate start_date, LocalDate ending_date) {
@@ -69,7 +68,7 @@ public class MembershipDAO {
         return membershipTypedQuery.getResultList();
     }
 
-    public List<Membership> findMembershipByCard (UUID card) {
+    public List<Membership> findMembershipByCard(UUID card) {
         TypedQuery<Membership> userQuery = em.createNamedQuery("findMembershipByCard", Membership.class);
         userQuery.setParameter("card", card);
 
