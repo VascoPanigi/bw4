@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-
 public class Membership {
     @Id
     @GeneratedValue
@@ -28,6 +27,12 @@ public class Membership {
         this.periodicity = periodicity;
         this.starting_date = starting_date;
         this.ending_date = ending_date;
+    }
+
+    public Membership(LocalDate starting_date, LocalDate ending_date, MembershipPeriodicity periodicity) {
+        this.ending_date = ending_date;
+        this.starting_date = starting_date;
+        this.periodicity = periodicity;
     }
 
     public Membership() {
