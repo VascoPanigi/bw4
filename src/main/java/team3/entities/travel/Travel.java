@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import team3.entities.commute.Commute;
 import team3.entities.transportation.Transportation;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,17 +14,14 @@ public class Travel {
     @GeneratedValue
     private UUID id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "travel_id")
-    private List<Commute> commutes;
+    @ManyToOne
+    @JoinColumn(name = "transportation_id")
+    private Transportation transportation;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "travel_id")
-    private List<Transportation> transportations;
-    //  @ManyToOne
-    //  @JoinColumn(name = "commute")
-    //  private Commute commute;
-    //  private Transportation transportation;
+    @ManyToOne
+    @JoinColumn(name = "commute_id")
+    private Commute commute;
+
     private int travelTime;
 
     public Travel(int travelTime) {

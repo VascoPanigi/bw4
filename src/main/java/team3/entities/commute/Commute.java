@@ -1,13 +1,14 @@
 package team3.entities.commute;
 
 import jakarta.persistence.*;
-import team3.entities.transportation.Transportation;
+import team3.entities.travel.Travel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "`commute`")
+@Table(name = "commute")
 public class Commute {
     @Id
     @GeneratedValue
@@ -23,7 +24,7 @@ public class Commute {
     private String terminal;
 
     @OneToMany(mappedBy = "commute", cascade = CascadeType.ALL)
-    private List<Transportation> trasportations;
+    private List<Travel> travels = new ArrayList<>();
 
     public Commute() {
     }
@@ -57,6 +58,4 @@ public class Commute {
     public void setTerminal(String terminal) {
         this.terminal = terminal;
     }
-
-
 }
