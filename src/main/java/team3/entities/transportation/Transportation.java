@@ -7,6 +7,7 @@ import team3.enums.TransportationType;
 import java.util.UUID;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "transportation")
 //@NamedQuery(blabla)
 public class Transportation {
