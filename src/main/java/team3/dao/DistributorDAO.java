@@ -2,9 +2,13 @@ package team3.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
+import team3.entities.distributor.AuthorizedDistributor;
+import team3.entities.distributor.AutomaticDistributor;
 import team3.entities.distributor.Distributor;
 import team3.exceptions.NotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class DistributorDAO {
@@ -36,5 +40,20 @@ public class DistributorDAO {
         em.remove(found);
         transaction.commit();
         System.out.println("The distributor: " + found.getId() + ", type: " + found.getType().toString().toLowerCase() + " has been eliminated from our system!");
+    }
+
+    public List<AutomaticDistributor> findAutomaticDistributors() {
+        TypedQuery<AutomaticDistributor> query = em.createNamedQuery("findAutomaticDistributors", AutomaticDistributor.class);
+        return query.getResultList();
+    }
+
+    public List<AuthorizedDistributor> findAuthorizedDistributors() {
+        TypedQuery<AuthorizedDistributor> query = em.createNamedQuery("findAuthorizedDistributors", AuthorizedDistributor.class);
+        return query.getResultList();
+    }
+
+    public List<AutomaticDistributor> findAllDistributorsInService() {
+        TypedQuery<AutomaticDistributor> query = em.createNamedQuery("findAllDistributorsInService", AutomaticDistributor.class);
+        return query.getResultList();
     }
 }

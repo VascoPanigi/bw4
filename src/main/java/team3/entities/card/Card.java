@@ -2,6 +2,7 @@ package team3.entities.card;
 
 import jakarta.persistence.*;
 import team3.entities.travel_document.Membership;
+import team3.entities.travel_document.Ticket;
 import team3.entities.user.UserClass;
 
 import java.time.LocalDate;
@@ -19,6 +20,10 @@ public class Card {
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private List<Membership> memberships;
+
+    @OneToMany(mappedBy = "card_ticket", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
+
 
     @OneToOne
     @JoinColumn(name = "user_id")

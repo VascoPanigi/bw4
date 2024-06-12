@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import team3.entities.card.Card;
+import team3.entities.distributor.Distributor;
 import team3.entities.travel_document.Membership;
 import team3.enums.MembershipPeriodicity;
 import team3.exceptions.NotFoundException;
@@ -43,7 +44,7 @@ public class MembershipDAO {
         System.out.println("The membership: " + found.getPeriodicity() + ", has been eliminated from our system!");
     }
 
-    public void addMembershipToCard(Card card, MembershipPeriodicity mp) {
+    public void addMembershipToCard(Card card, MembershipPeriodicity mp, Distributor distributor) {
         EntityTransaction transaction = em.getTransaction();
 
         Membership membership = null;
@@ -56,6 +57,7 @@ public class MembershipDAO {
         }
         transaction.begin();
         membership.setCard(card);
+        membership.setDistributor(distributor);
         em.persist(membership);
         transaction.commit();
         System.out.println("The membership has been created: " + membership.getId());

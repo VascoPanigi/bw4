@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import team3.entities.card.Card;
 import team3.entities.distributor.Distributor;
 import team3.entities.transportation.Transportation;
 
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 
 
 @Entity
-@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.isValid = :isValid")
+//@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.isValid = :isValid")
 @Table(name = "Tickets")
 public class Ticket extends TravelDocument {
     private boolean isValid;
@@ -24,12 +25,32 @@ public class Ticket extends TravelDocument {
     @JoinColumn(name = "distributor_id")
     private Distributor distributor;
 
+    @ManyToOne
+    @JoinColumn(name = "card_id")
+    private Card card_ticket;
+
     public Ticket(LocalDate issueDate) {
         super(issueDate);
         this.isValid = true;
     }
 
     public Ticket() {
+    }
+
+    public Card getCard_ticket() {
+        return card_ticket;
+    }
+
+    public void setCard_ticket(Card card_ticket) {
+        this.card_ticket = card_ticket;
+    }
+
+    public Distributor getDistributor() {
+        return distributor;
+    }
+
+    public void setDistributor(Distributor distributor) {
+        this.distributor = distributor;
     }
 
     public boolean isValid() {

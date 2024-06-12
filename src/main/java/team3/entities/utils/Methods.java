@@ -4,10 +4,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
-import team3.dao.CardDao;
-import team3.dao.DistributorDAO;
-import team3.dao.MembershipDAO;
-import team3.dao.UserDao;
+import team3.dao.*;
+import team3.entities.distributor.AuthorizedDistributor;
+import team3.entities.distributor.AutomaticDistributor;
+import team3.entities.distributor.Distributor;
 import team3.entities.travel_document.Membership;
 import team3.entities.user.UserClass;
 import team3.enums.MembershipPeriodicity;
@@ -16,6 +16,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Methods {
@@ -26,32 +27,62 @@ public class Methods {
     private static final MembershipDAO md = new MembershipDAO(em);
     private static final CardDao cd = new CardDao(em);
     private static final DistributorDAO dd = new DistributorDAO(em);
+    private static final TicketDAO td = new TicketDAO(em);
+    private static final Random random = new Random();
+
 
     public static void manageDistributor() {
         while (true) {
             try {
-                //TODO where do you wanna go? automatic or authorized distributor
-                // if distributor is automatic check if it's in_service, otherwise make him chose another one
+                System.out.println("Hello, where do you want to go?");
+                System.out.println("1- Automatic Distributor, 2- Authorized Distributor");
+                System.out.println("If you wanna exit, type 0");
 
+                int distributorChoice = getUserChoice(1, 2);
+
+                Distributor distributor = null;
+                switch (distributorChoice) {
+                    case 1:
+                        System.out.println("Finding an automatic distributor on service...");
+                        List<AutomaticDistributor> automaticDistributorsInService = dd.findAllDistributorsInService();
+                        //  se la lista è vuota la riempiamo
+                        if (automaticDistributorsInService.isEmpty()) {
+                            for (int i = 0; i < 10; i++) {
+                                Suppliers.automaticDistributorSupplier.get();
+                            }
+                        }
+                        //prendiamo un index random della lista
+                        int randomIndex = random.nextInt(automaticDistributorsInService.size());
+                        distributor = automaticDistributorsInService.get(randomIndex);
+
+                        System.out.println("Found one! Your distributor has ID: " + distributor.getId());
+//                        System.out.println(distributor);
+                        break;
+                    case 2:
+                        System.out.println("Looking for an authorized near you...");
+                        List<AuthorizedDistributor> authorizedDistributors = dd.findAuthorizedDistributors();
+                        int randomIndex2 = random.nextInt(authorizedDistributors.size());
+                        distributor = authorizedDistributors.get(randomIndex2);
+                        System.out.println("Your distributor has ID: " + distributor.getId());
+                        break;
+                    case 0:
+                        System.out.println("See you soon!");
+                        return;
+                }
 
                 // richiesta dati per cercare user nel database
                 System.out.println();
-                System.out.println("Hello, please insert your name: ");
-                System.out.println("If you wanna exit, type exit");
+                System.out.println("Please insert your name: ");
                 String name = scanner.nextLine().toLowerCase();
-                if (name.equals("exit")) {
-                    System.out.println("See you soon!");
-                    return;
-                }
                 System.out.println();
                 System.out.println("Now, insert your surname");
                 String surname = scanner.nextLine().toLowerCase();
                 UserClass user = ud.findUserByNameAndSurname(name, surname);
+                System.out.println("User found in our system!");
 
-                System.out.println(user);
 
-
-                // TODO what do you want to purchase? membership or ticket? to purchase a membership, you must have a card.
+                System.out.println("In order to use our distributor, you must have a card.");
+                System.out.println("Checking card details...\n");
 
 
                 //check sulla card dell'utente
@@ -70,30 +101,53 @@ public class Methods {
                     }
                 } else {
 
-                    System.out.println(user.getCard().getExpiration_date().toEpochDay());
-                    System.out.println(LocalDate.now().toEpochDay());
                     if (LocalDate.now().isAfter(user.getCard().getExpiration_date())) {
                         System.out.println("Your card is expired. Renovating it...");
                         cd.renovateCard(user.getCard());
-                        System.out.println("Card renovated");
+                        System.out.println("Card renovated!\n");
+
+                    } else {
+                        System.out.println("We found a valid card!\n");
+
                     }
                 }
-
                 // una volta che ci troviamo qui, siamo sicuri al 100% che abbiamo sia card attiva che user
-                System.out.println("Which kind of membership do you wish to purchase? ");
-                System.out.println("1-weekly, 2-monthly");
-                int periodicity = getUserChoice(1, 2);
 
-                // generazione membership a seconda della periodicity
-                switch (periodicity) {
+                System.out.println("What do you wish to purchase?");
+                System.out.println("1- Membership, 2- Single ticket");
+                int membershipOrTicket = getUserChoice(1, 2);
+                switch (membershipOrTicket) {
                     case 1:
-                        md.addMembershipToCard(user.getCard(), MembershipPeriodicity.WEEKLY);
-                        System.out.println("7 days membership added to your card.");
+                        System.out.println("Which kind of membership do you wish to purchase? ");
+                        System.out.println("1-weekly, 2-monthly");
+                        int periodicity = getUserChoice(1, 2);
+
+                        // generazione membership a seconda della periodicity
+                        switch (periodicity) {
+                            case 1:
+                                md.addMembershipToCard(user.getCard(), MembershipPeriodicity.WEEKLY, distributor);
+                                System.out.println("7 days membership added to your card.");
+                                break;
+                            case 2:
+                                md.addMembershipToCard(user.getCard(), MembershipPeriodicity.MONTHLY, distributor);
+                                System.out.println("30 days membership added to your card.");
+                                break;
+                        }
+                    case 2:
+                        td.addTicketToCard(user.getCard(), distributor);
+                        System.out.println("Ticket added to your card!");
+                        break;
+                }
+                System.out.println("Do you wish to perform another action?");
+                System.out.println("1- Yes, 2- No");
+
+                int keepBuying = getUserChoice(1, 2);
+                switch (keepBuying) {
+                    case 1:
                         break;
                     case 2:
-                        md.addMembershipToCard(user.getCard(), MembershipPeriodicity.MONTHLY);
-                        System.out.println("30 days membership added to your card.");
-                        break;
+                        System.out.println("See you soon! :D \n");
+                        return;
                 }
 
             } catch (NoResultException nr) {

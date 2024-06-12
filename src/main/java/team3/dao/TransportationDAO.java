@@ -2,12 +2,9 @@ package team3.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.TypedQuery;
 import team3.entities.transportation.Transportation;
-import team3.enums.TransportationState;
 import team3.exceptions.NotFoundException;
 
-import java.util.List;
 import java.util.UUID;
 
 public class TransportationDAO {
@@ -60,13 +57,13 @@ public class TransportationDAO {
         }
     }
 
-    public List<Transportation> findInServiceTransportation(TransportationState inService) {
-
-
-        TypedQuery<Transportation> userQuery = em.createNamedQuery("findInServiceTransportation", Transportation.class);
-        userQuery.setParameter("inService", inService);
-
-        return userQuery.getResultList();
-
-    }
+//    public List<Transportation> findInServiceTransportation(TransportationState inService) {
+//
+//
+//        TypedQuery<Transportation> userQuery = em.createNamedQuery("findInServiceTransportation", Transportation.class);
+//        userQuery.setParameter("inService", inService);
+//
+//        return userQuery.getResultList();
+//
+//    }
 }

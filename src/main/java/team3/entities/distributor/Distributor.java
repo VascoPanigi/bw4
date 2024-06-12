@@ -16,8 +16,8 @@ public abstract class Distributor {
     @Id
     @GeneratedValue
 
-    private UUID id;
-    private DistributorTypes type;
+    protected UUID id;
+    protected DistributorTypes type;
 
     @OneToMany(mappedBy = "distributor", cascade = CascadeType.ALL)
     private List<Membership> memberships = new ArrayList<>();
@@ -50,5 +50,13 @@ public abstract class Distributor {
 
     public void setType(DistributorTypes type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Distributor{" +
+                "type=" + type +
+                ", id=" + id +
+                '}';
     }
 }
