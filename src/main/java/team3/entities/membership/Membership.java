@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@NamedQuery(name = "searchByTimeInterval", query = "SELECT m FROM Membership m WHERE m.starting_date >= :start_date AND m.starting_date <= :ending_date")
+
 public class Membership {
     @Id
     @GeneratedValue
@@ -74,6 +76,15 @@ public class Membership {
 
     public void setCard(Card card) {
         this.card = card;
+    }
+
+    @Override
+    public String toString() {
+        return "Membership{" +
+                "periodicity=" + periodicity +
+                ", starting_date=" + starting_date +
+                ", ending_date=" + ending_date +
+                '}';
     }
 }
 

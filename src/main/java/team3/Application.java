@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import team3.dao.CardDao;
 import team3.dao.MembershipDAO;
 import team3.dao.UserDao;
+import team3.entities.membership.Membership;
 import team3.entities.user.UserClass;
 import team3.entities.utils.Suppliers;
 import team3.enums.MembershipPeriodicity;
@@ -95,19 +96,17 @@ public class Application {
                 }
             }
         }
-
-        // extra. aggiungere numero biglietti
-        //check se l-utente ha la carta, altrimenti creazione carta per utente X - get userID
-
-
-        //se ha la carta, check se è scaduta
-        //--------------------------------------------------------
-        //tipo di abbonamento da prendere
-        //TODO.7 - per fare il commit dell'abbonamento nella carta - QUERY ricerca carta per id
-        //check se lo user voglia effettuare un'altra operazione
-
-
     }
+
+//    public static void searchByTimeInterval() {
+//        while (true) {
+//            System.out.println();
+//            System.out.println("Hello, insert the year");
+//            System.out.println("If you wanna exit, type exit");
+//        }
+//
+//    }
+
 
     public static void main(String[] args) {
         System.out.println("Welcome to our system!");
@@ -116,11 +115,11 @@ public class Application {
 
 //        UserClass gabibbo = new UserClass("gabibbo", "scotti");
 //        ud.save(gabibbo);
-//        for (int i = 0; i < 2; i++) {
-//            UserClass newMembership = Suppliers.userSupplier.get();
-//            ud.save(newMembership);
-//            System.out.println("YIPPIEE");
-//        }
+        for (int i = 0; i < 20; i++) {
+            Membership newMembership = Suppliers.membershipSupplier.get();
+            md.save(newMembership);
+            System.out.println("YIPPIEE");
+        }
 
 
         while (true) {
@@ -143,6 +142,12 @@ public class Application {
                     case 2:
                         manageDistributor();
                         break;
+                    case 3:
+                        LocalDate start_date = LocalDate.of(2023, 1, 20);
+                        LocalDate ending_date = LocalDate.of(2025, 1, 20);
+
+                        md.searchByTimeInterval(start_date, ending_date).forEach(System.out::println);
+
                     default:
                         System.out.println("Invalid choice, try again.");
                         break;
