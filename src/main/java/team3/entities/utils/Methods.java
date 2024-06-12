@@ -30,6 +30,10 @@ public class Methods {
     public static void manageDistributor() {
         while (true) {
             try {
+                //TODO where do you wanna go? automatic or authorized distributor
+                // if distributor is automatic check if it's in_service, otherwise make him chose another one
+
+
                 // richiesta dati per cercare user nel database
                 System.out.println();
                 System.out.println("Hello, please insert your name: ");
@@ -45,6 +49,10 @@ public class Methods {
                 UserClass user = ud.findUserByNameAndSurname(name, surname);
 
                 System.out.println(user);
+
+
+                // TODO what do you want to purchase? membership or ticket? to purchase a membership, you must have a card.
+
 
                 //check sulla card dell'utente
                 if (user.getCard() == null) {
