@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+
+@NamedQuery(name = "findMembershipByCard", query = "SELECT m FROM Membership m WHERE m.card.id = :card ")
 public class Membership {
     @Id
     @GeneratedValue
