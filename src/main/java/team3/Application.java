@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import team3.dao.CardDao;
 import team3.dao.MembershipDAO;
 import team3.dao.UserDao;
-import team3.entities.membership.Membership;
 import team3.entities.user.UserClass;
 import team3.entities.utils.Suppliers;
 import team3.enums.MembershipPeriodicity;
@@ -115,11 +114,11 @@ public class Application {
 
 //        UserClass gabibbo = new UserClass("gabibbo", "scotti");
 //        ud.save(gabibbo);
-        for (int i = 0; i < 20; i++) {
-            Membership newMembership = Suppliers.membershipSupplier.get();
-            md.save(newMembership);
-            System.out.println("YIPPIEE");
-        }
+//        for (int i = 0; i < 20; i++) {
+//            Membership newMembership = Suppliers.membershipSupplier.get();
+//            md.save(newMembership);
+//            System.out.println("YIPPIEE");
+//        }
 
 
         while (true) {
