@@ -40,7 +40,7 @@ public class CardDao {
     public void renovateCard(Card card) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        card.setExpiration_date(card.getExpiration_date().plusYears(5));
+        card.setExpiration_date(card.getExpiration_date().plusYears(1));
         em.persist(card);
         transaction.commit();
         System.out.println("The card has now expiration date: " + card.getExpiration_date());
