@@ -9,6 +9,8 @@ import team3.enums.TransportationType;
 import java.util.UUID;
 
 @Entity
+
+@NamedQuery(name="findInServiceTransportation",  query = "SELECT t FROM Transportation t WHERE t.TransportationState = :TransportationState")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "transportation")
 //@NamedQuery(blabla)

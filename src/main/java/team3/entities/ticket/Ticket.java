@@ -8,6 +8,9 @@ import java.util.UUID;
 
 
 @Entity
+
+@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.isValid = :isValid ")
+
 @Table(name = "Tickets")
 public class Ticket {
     @Id
