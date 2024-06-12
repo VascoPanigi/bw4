@@ -2,9 +2,13 @@ package team3.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team3.entities.card.Card;
+import team3.entities.travel_document.Membership;
 import team3.exceptions.NotFoundException;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class CardDao {
@@ -44,5 +48,23 @@ public class CardDao {
         em.persist(card);
         transaction.commit();
         System.out.println("The card has now expiration date: " + card.getExpiration_date());
+    }
+
+    public boolean isValidMembership(Card card) {
+        TypedQuery<Membership> query = em.createQuery("SELECT m FROM Membership m WHERE m.card = :card", Membership.class);
+        query.setParameter("card", card);
+        List<Membership> memberships = query.getResultList();
+
+        for (Membership membership : memberships) {
+            if (membership.getEnding_date().isAfter(LocalDate.now())) {
+                System.out.println("A valid membership has been found! It has expiration date " + membership.getEnding_date());
+                System.out.println();
+                // se siamo qui abbiamo trovato almeno un abbonamento valido
+                return true;
+            }
+        }
+        System.out.println("No valid membership has been found!\n");
+
+        return false;
     }
 }

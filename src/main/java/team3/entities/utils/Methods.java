@@ -264,6 +264,32 @@ public class Methods {
         }
     }
 
+    public static void checkValidMembership() {
+        try {
+            System.out.println("Please insert your name: ");
+            String name = scanner.nextLine().toLowerCase();
+            System.out.println();
+            System.out.println("Now, insert your surname");
+            String surname = scanner.nextLine().toLowerCase();
+            UserClass user = ud.findUserByNameAndSurname(name, surname);
+            System.out.println("User found in our system!");
+            cd.isValidMembership(user.getCard());
+
+        } catch (NoResultException nr) {
+            System.out.println("This user does not exist in our Database. Do you wish to register?");
+            System.out.println("1-Yes, 2-No");
+            int userChoice = getUserChoice(1, 2);
+            switch (userChoice) {
+                case 1:
+                    Suppliers.createUserFromInput(scanner, em, ud);
+                    break;
+                case 2:
+                    System.out.println("See you soon!");
+                    break;
+            }
+        }
+    }
+
     public static void App() {
 //        for (int i = 0; i < 5; i++) {
 //            AuthorizedDistributor newDistributor = Suppliers.authorizedDistributorSupplier.get();
@@ -284,7 +310,7 @@ public class Methods {
 
         while (true) {
             System.out.println("Which operation do you wish to perform?");
-            System.out.println("1-Create a new User, 2-Buy a membership");
+            System.out.println("1-Create a new User, 2-Buy a membership, 3- Check your memberships");
             System.out.println("Type 0 to exit.");
 
             try {
@@ -303,6 +329,9 @@ public class Methods {
                         manageDistributor();
                         break;
                     case 3:
+                        checkValidMembership();
+                        break;
+                    case 4:
                         searchByTimeInterval();
                         break;
                     default:
