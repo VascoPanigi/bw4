@@ -16,10 +16,20 @@ public class Ticket {
 
     private LocalDate issueDate;
 
+    private boolean isValid;
+
     @ManyToOne
     @JoinColumn(name = "transportation_id")
     private Transportation transportation;
 
+
+    public Ticket(LocalDate issueDate) {
+        this.issueDate = issueDate;
+        this.isValid = true;
+    }
+
+    public Ticket() {
+    }
 
     public UUID getTicket_id() {
         return ticket_id;
@@ -43,5 +53,13 @@ public class Ticket {
 
     public void setTransportation(Transportation transportation) {
         this.transportation = transportation;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
     }
 }

@@ -9,15 +9,14 @@ public class Travel {
     private int number;
     private int duration;
     private String startingPoint;
-    private String terminus;
+    private String terminal;
     @Enumerated(EnumType.STRING)
     private TransportationType transportationType;
 
-    public Travel(int number, int duration, String startingPoint, String terminus, TransportationType transportationType) {
-        this.number = number;
+    public Travel(int duration, String startingPoint, String terminus, TransportationType transportationType) {
         this.duration = duration;
         this.startingPoint = startingPoint;
-        this.terminus = terminus;
+        this.terminal = terminus;
         this.transportationType = transportationType;
     }
 
@@ -51,12 +50,12 @@ public class Travel {
         this.startingPoint = startingPoint;
     }
 
-    public String getTerminus() {
-        return terminus;
+    public String getTerminal() {
+        return terminal;
     }
 
-    public void setTerminus(String terminus) {
-        this.terminus = terminus;
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
     }
 
 }

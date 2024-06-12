@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "transportation")
+//@NamedQuery(blabla)
 public class Transportation {
 
     @Id
@@ -27,6 +28,8 @@ public class Transportation {
 
     @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
     private MaintenancePeriod maintenancePeriod;
+
+    //@OneToMany --- vogliamo una lista di Tickets. finire di implementare manytoone da tickets su transportation_id
 
 
     public UUID getId() {
