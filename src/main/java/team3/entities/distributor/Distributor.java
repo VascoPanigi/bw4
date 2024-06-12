@@ -1,28 +1,35 @@
 package team3.entities.distributor;
 
 import jakarta.persistence.*;
+import team3.entities.travel_document.Membership;
+import team3.entities.travel_document.Ticket;
+import team3.enums.DistributorTypes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
 @Entity
-@Table(name= "distributor")
+@Table(name = "distributor")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-
-public  abstract class Distributor {
-
+public abstract class Distributor {
     @Id
     @GeneratedValue
 
-  private UUID id;
+    private UUID id;
+    private DistributorTypes type;
 
-   //private List<Ticket> ticketList;
+    @OneToMany(mappedBy = "distributor", cascade = CascadeType.ALL)
+    private List<Membership> memberships = new ArrayList<>();
 
+    @OneToMany(mappedBy = "distributor", cascade = CascadeType.ALL)
+    private List<Ticket> tickets = new ArrayList<>();
 
-    public UUID getId() {
-        return id;
+    public Distributor() {
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public Distributor(DistributorTypes type) {
+        this.type = type;
     }
 
 //    public List<Ticket> getTicketList() {
@@ -33,12 +40,15 @@ public  abstract class Distributor {
 //        this.ticketList = ticketList;
 //    }
 
-    public Distributor() {
-
+    public UUID getId() {
+        return id;
     }
 
-    public Distributor(UUID id) {
-        this.id = id;
+    public DistributorTypes getType() {
+        return type;
+    }
 
+    public void setType(DistributorTypes type) {
+        this.type = type;
     }
 }

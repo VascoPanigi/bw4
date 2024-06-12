@@ -1,10 +1,13 @@
-package team3.entities.ticket;
+package team3.entities.travel_document;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import team3.entities.distributor.Distributor;
 import team3.entities.transportation.Transportation;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 
 @Entity
@@ -12,50 +15,23 @@ import java.util.UUID;
 @NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.isValid = :isValid ")
 
 @Table(name = "Tickets")
-public class Ticket {
-    @Id
-    @GeneratedValue
-    private UUID ticket_id;
-
-    private LocalDate issueDate;
-
+public class Ticket extends TravelDocument {
     private boolean isValid;
 
     @ManyToOne
     @JoinColumn(name = "transportation_id")
     private Transportation transportation;
 
+    @ManyToOne
+    @JoinColumn(name = "distributor_id")
+    private Distributor distributor;
 
     public Ticket(LocalDate issueDate) {
-        this.issueDate = issueDate;
+        super(issueDate);
         this.isValid = true;
     }
 
     public Ticket() {
-    }
-
-    public UUID getTicket_id() {
-        return ticket_id;
-    }
-
-    public void setTicket_id(UUID ticket_id) {
-        this.ticket_id = ticket_id;
-    }
-
-    public LocalDate getIssueDate() {
-        return issueDate;
-    }
-
-    public void setIssueDate(LocalDate issueDate) {
-        this.issueDate = issueDate;
-    }
-
-    public Transportation getTransportation() {
-        return transportation;
-    }
-
-    public void setTransportation(Transportation transportation) {
-        this.transportation = transportation;
     }
 
     public boolean isValid() {
@@ -64,5 +40,13 @@ public class Ticket {
 
     public void setValid(boolean valid) {
         isValid = valid;
+    }
+
+    public Transportation getTransportation() {
+        return transportation;
+    }
+
+    public void setTransportation(Transportation transportation) {
+        this.transportation = transportation;
     }
 }

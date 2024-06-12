@@ -6,7 +6,10 @@ import jakarta.persistence.EntityTransaction;
 import team3.dao.CardDao;
 import team3.dao.UserDao;
 import team3.entities.card.Card;
-import team3.entities.membership.Membership;
+import team3.entities.distributor.AuthorizedDistributor;
+import team3.entities.distributor.AutomaticDistributor;
+import team3.entities.distributor.Distributor;
+import team3.entities.travel_document.Membership;
 import team3.entities.user.UserClass;
 import team3.enums.MembershipPeriodicity;
 
@@ -22,7 +25,7 @@ public class Suppliers {
         LocalDate randomDate = Suppliers.randomDateSupplier(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 30)).get();
         return new Card(randomDate);
     };
-
+    public static Supplier<AuthorizedDistributor> authorizedDistributorSupplier = AuthorizedDistributor::new;
     static Faker fkr = new Faker();
     public static Supplier<UserClass> userSupplier = () -> {
         String[] fullname;
@@ -51,7 +54,22 @@ public class Suppliers {
             case MONTHLY -> randomDate.plusDays(30);
         };
 
-        return new Membership(periodicity, randomDate, endingDate);
+        return new Membership(periodicity, randomDate, endingDate, LocalDate.now());
+    };
+    public static Supplier<Distributor> randomDistributorSupplier = () -> {
+        boolean isAutomatic = random.nextBoolean();
+
+
+        if (isAutomatic) {
+            Boolean inService = random.nextBoolean();
+            return new AutomaticDistributor(inService);
+        } else {
+            return new AuthorizedDistributor();
+        }
+    };
+    public static Supplier<AutomaticDistributor> automaticDistributorSupplier = () -> {
+        Boolean inService = random.nextBoolean();
+        return new AutomaticDistributor(inService);
     };
 
     public static Supplier<LocalDate> randomDateSupplier(LocalDate startDate, LocalDate endDate) {
@@ -65,7 +83,6 @@ public class Suppliers {
             return LocalDate.ofEpochDay(randomEpochDay);
         };
     }
-
 
     public static void linkUserAndCard(EntityManager em, CardDao cd, UserDao ud, boolean hasCard) {
         EntityTransaction transaction = em.getTransaction();

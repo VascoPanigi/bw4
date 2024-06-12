@@ -5,14 +5,17 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import team3.dao.CardDao;
+import team3.dao.DistributorDAO;
 import team3.dao.MembershipDAO;
 import team3.dao.UserDao;
+import team3.entities.travel_document.Membership;
 import team3.entities.user.UserClass;
 import team3.enums.MembershipPeriodicity;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Methods {
@@ -22,10 +25,15 @@ public class Methods {
     private static final UserDao ud = new UserDao(em);
     private static final MembershipDAO md = new MembershipDAO(em);
     private static final CardDao cd = new CardDao(em);
+    private static final DistributorDAO dd = new DistributorDAO(em);
 
     public static void manageDistributor() {
         while (true) {
             try {
+                //TODO where do you wanna go? automatic or authorized distributor
+                // if distributor is automatic check if it's in_service, otherwise make him chose another one
+
+
                 // richiesta dati per cercare user nel database
                 System.out.println();
                 System.out.println("Hello, please insert your name: ");
@@ -41,6 +49,10 @@ public class Methods {
                 UserClass user = ud.findUserByNameAndSurname(name, surname);
 
                 System.out.println(user);
+
+
+                // TODO what do you want to purchase? membership or ticket? to purchase a membership, you must have a card.
+
 
                 //check sulla card dell'utente
                 if (user.getCard() == null) {
@@ -125,7 +137,12 @@ public class Methods {
                     continue;
                 }
 
-                md.searchByTimeInterval(start_date, ending_date).forEach(System.out::println);
+                List<Membership> results = md.searchByTimeInterval(start_date, ending_date);
+                if (results.isEmpty()) {
+                    System.out.println("No memberships found within the given date range.");
+                } else {
+                    results.forEach(System.out::println);
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter numeric values.");
             } catch (DateTimeException e) {
@@ -194,6 +211,19 @@ public class Methods {
     }
 
     public static void App() {
+//        for (int i = 0; i < 5; i++) {
+//            AuthorizedDistributor newDistributor = Suppliers.authorizedDistributorSupplier.get();
+//            dd.save(newDistributor);
+//            System.out.println("YIPPIEE");
+//        }
+//
+//        for (int i = 0; i < 5; i++) {
+//            AutomaticDistributor newDistributor = Suppliers.automaticDistributorSupplier.get();
+//            dd.save(newDistributor);
+//            System.out.println("YIPPIEE");
+//        }
+
+
         System.out.println("Welcome to our system!");
         System.out.println();
 
@@ -230,6 +260,7 @@ public class Methods {
                 scanner.nextLine();
             }
         }
+
 
 //        UserClass gabibbo = new UserClass("gabibbo", "scotti");
 //        ud.save(gabibbo);

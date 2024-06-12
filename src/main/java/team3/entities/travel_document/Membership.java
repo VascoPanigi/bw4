@@ -1,22 +1,19 @@
-package team3.entities.membership;
+package team3.entities.travel_document;
 
 
 import jakarta.persistence.*;
 import team3.entities.card.Card;
+import team3.entities.distributor.Distributor;
 import team3.enums.MembershipPeriodicity;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
-@NamedQuery(name = "searchByTimeInterval", query = "SELECT m FROM Membership m WHERE m.starting_date >= :start_date AND m.starting_date <= :ending_date")
-
-
-@NamedQuery(name = "findMembershipByCard", query = "SELECT m FROM Membership m WHERE m.card.id = :card ")
-public class Membership {
-    @Id
-    @GeneratedValue
-    private UUID membership_id;
+@NamedQueries({
+        @NamedQuery(name = "searchByTimeInterval", query = "SELECT m FROM Membership m WHERE m.starting_date >= :start_date AND m.starting_date <= :ending_date"),
+        @NamedQuery(name = "findMembershipByCard", query = "SELECT m FROM Membership m WHERE m.card.id = :card "),
+})
+public class Membership extends TravelDocument {
 
     @Enumerated(EnumType.STRING)
     private MembershipPeriodicity periodicity; // Settimana, Mensile
@@ -27,20 +24,26 @@ public class Membership {
     @JoinColumn(name = "card_id")
     private Card card;
 
-    public Membership(MembershipPeriodicity periodicity, LocalDate starting_date, LocalDate ending_date) {
-        this.periodicity = periodicity;
-        this.starting_date = starting_date;
+    @ManyToOne
+    @JoinColumn(name = "distributor_id")
+    private Distributor distributor;
+
+    public Membership(LocalDate starting_date, LocalDate ending_date, MembershipPeriodicity periodicity, LocalDate issueDate) {
+        super(issueDate);
         this.ending_date = ending_date;
+        this.starting_date = starting_date;
+        this.periodicity = periodicity;
     }
 
-    public Membership(LocalDate starting_date, LocalDate ending_date, MembershipPeriodicity periodicity) {
+
+    public Membership(MembershipPeriodicity periodicity, LocalDate starting_date, LocalDate ending_date, LocalDate issueDate) {
+        super(issueDate);
         this.ending_date = ending_date;
         this.starting_date = starting_date;
         this.periodicity = periodicity;
     }
 
     public Membership() {
-
     }
 
     public MembershipPeriodicity getPeriodicity() {
@@ -50,11 +53,6 @@ public class Membership {
     public void setPeriodicity(MembershipPeriodicity periodicity) {
         this.periodicity = periodicity;
     }
-
-    public UUID getMembership_id() {
-        return membership_id;
-    }
-
 
     public LocalDate getStarting_date() {
         return starting_date;
