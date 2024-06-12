@@ -11,6 +11,8 @@ import java.util.UUID;
 @Entity
 @NamedQuery(name = "searchByTimeInterval", query = "SELECT m FROM Membership m WHERE m.starting_date >= :start_date AND m.starting_date <= :ending_date")
 
+
+@NamedQuery(name = "findMembershipByCard", query = "SELECT m FROM Membership m WHERE m.card.id = :card ")
 public class Membership {
     @Id
     @GeneratedValue
