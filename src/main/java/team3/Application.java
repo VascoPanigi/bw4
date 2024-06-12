@@ -157,7 +157,7 @@ public class Application {
                         LocalDate start_date = LocalDate.of(2023, 1, 20);
                         LocalDate ending_date = LocalDate.of(2025, 1, 20);
 
-                        md.findMembershipsInAGivenPeriod(start_date, ending_date).forEach(System.out::println);
+                        md.searchByTimeInterval(start_date, ending_date).forEach(System.out::println);
 
                     default:
                         System.out.println("Invalid choice, try again.");
