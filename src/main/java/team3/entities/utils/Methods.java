@@ -8,13 +8,13 @@ import team3.dao.CardDao;
 import team3.dao.DistributorDAO;
 import team3.dao.MembershipDAO;
 import team3.dao.UserDao;
-import team3.entities.distributor.Distributor;
 import team3.entities.travel_document.Membership;
 import team3.entities.user.UserClass;
 import team3.enums.MembershipPeriodicity;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -203,51 +203,55 @@ public class Methods {
     }
 
     public static void App() {
-
-
-        for (int i = 0; i < 20; i++) {
-            Distributor newDistributor = Suppliers.distributorSupplier.get();
-            dd.save(newDistributor);
-            System.out.println("YIPPIEE");
-        }
-
-
-//        System.out.println("Welcome to our system!");
-//        System.out.println();
-//
-//
-//        while (true) {
-//            System.out.println("Which operation do you wish to perform?");
-//            System.out.println("1-Create a new User, 2-Buy a membership");
-//            System.out.println("Type 0 to exit.");
-//
-//            try {
-//                int userChoice = scanner.nextInt();
-//                scanner.nextLine();
-//
-//                switch (userChoice) {
-//                    case 0:
-//                        System.out.println("See you!");
-//                        scanner.close();
-//                        return;
-//                    case 1:
-//                        Suppliers.createUserFromInput(scanner, em, ud);
-//                        break;
-//                    case 2:
-//                        manageDistributor();
-//                        break;
-//                    case 3:
-//                        searchByTimeInterval();
-//                        break;
-//                    default:
-//                        System.out.println("Invalid choice, try again.");
-//                        break;
-//                }
-//            } catch (InputMismatchException e) {
-//                System.out.println("Invalid input. Please enter a valid number.");
-//                scanner.nextLine();
-//            }
+//        for (int i = 0; i < 5; i++) {
+//            AuthorizedDistributor newDistributor = Suppliers.authorizedDistributorSupplier.get();
+//            dd.save(newDistributor);
+//            System.out.println("YIPPIEE");
 //        }
+//
+//        for (int i = 0; i < 5; i++) {
+//            AutomaticDistributor newDistributor = Suppliers.automaticDistributorSupplier.get();
+//            dd.save(newDistributor);
+//            System.out.println("YIPPIEE");
+//        }
+
+
+        System.out.println("Welcome to our system!");
+        System.out.println();
+
+
+        while (true) {
+            System.out.println("Which operation do you wish to perform?");
+            System.out.println("1-Create a new User, 2-Buy a membership");
+            System.out.println("Type 0 to exit.");
+
+            try {
+                int userChoice = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (userChoice) {
+                    case 0:
+                        System.out.println("See you!");
+                        scanner.close();
+                        return;
+                    case 1:
+                        Suppliers.createUserFromInput(scanner, em, ud);
+                        break;
+                    case 2:
+                        manageDistributor();
+                        break;
+                    case 3:
+                        searchByTimeInterval();
+                        break;
+                    default:
+                        System.out.println("Invalid choice, try again.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine();
+            }
+        }
 
 
 //        UserClass gabibbo = new UserClass("gabibbo", "scotti");

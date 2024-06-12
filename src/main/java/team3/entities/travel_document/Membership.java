@@ -3,6 +3,7 @@ package team3.entities.travel_document;
 
 import jakarta.persistence.*;
 import team3.entities.card.Card;
+import team3.entities.distributor.Distributor;
 import team3.enums.MembershipPeriodicity;
 
 import java.time.LocalDate;
@@ -23,6 +24,9 @@ public class Membership extends TravelDocument {
     @JoinColumn(name = "card_id")
     private Card card;
 
+    @ManyToOne
+    @JoinColumn(name = "distributor_id")
+    private Distributor distributor;
 
     public Membership(LocalDate starting_date, LocalDate ending_date, MembershipPeriodicity periodicity, LocalDate issueDate) {
         super(issueDate);

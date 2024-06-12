@@ -25,7 +25,7 @@ public class Suppliers {
         LocalDate randomDate = Suppliers.randomDateSupplier(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 30)).get();
         return new Card(randomDate);
     };
-
+    public static Supplier<AuthorizedDistributor> authorizedDistributorSupplier = AuthorizedDistributor::new;
     static Faker fkr = new Faker();
     public static Supplier<UserClass> userSupplier = () -> {
         String[] fullname;
@@ -56,7 +56,7 @@ public class Suppliers {
 
         return new Membership(periodicity, randomDate, endingDate, LocalDate.now());
     };
-    public static Supplier<Distributor> distributorSupplier = () -> {
+    public static Supplier<Distributor> randomDistributorSupplier = () -> {
         boolean isAutomatic = random.nextBoolean();
 
 
@@ -66,6 +66,10 @@ public class Suppliers {
         } else {
             return new AuthorizedDistributor();
         }
+    };
+    public static Supplier<AutomaticDistributor> automaticDistributorSupplier = () -> {
+        Boolean inService = random.nextBoolean();
+        return new AutomaticDistributor(inService);
     };
 
     public static Supplier<LocalDate> randomDateSupplier(LocalDate startDate, LocalDate endDate) {

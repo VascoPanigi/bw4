@@ -1,8 +1,12 @@
 package team3.entities.distributor;
 
 import jakarta.persistence.*;
+import team3.entities.travel_document.Membership;
+import team3.entities.travel_document.Ticket;
 import team3.enums.DistributorTypes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,6 +19,11 @@ public abstract class Distributor {
     private UUID id;
     private DistributorTypes type;
 
+    @OneToMany(mappedBy = "distributor", cascade = CascadeType.ALL)
+    private List<Membership> memberships = new ArrayList<>();
+
+    @OneToMany(mappedBy = "distributor", cascade = CascadeType.ALL)
+    private List<Ticket> tickets = new ArrayList<>();
 
     public Distributor() {
     }
