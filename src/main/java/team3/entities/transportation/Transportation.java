@@ -1,6 +1,8 @@
 package team3.entities.transportation;
 
 import jakarta.persistence.*;
+import team3.entities.commute.Commute;
+import team3.entities.travel.Travel;
 import team3.enums.TransportationState;
 import team3.enums.TransportationType;
 
@@ -10,6 +12,7 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "transportation")
 //@NamedQuery(blabla)
+
 public class Transportation {
 
     @Id
@@ -29,6 +32,15 @@ public class Transportation {
 
     @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
     private MaintenancePeriod maintenancePeriod;
+
+    @ManyToOne
+    @JoinColumn(name = "commute_id")
+    private Commute commute;
+
+    @ManyToOne
+    @JoinColumn(name = "travel_id")
+    private Travel travel;
+
 
     //@OneToMany --- vogliamo una lista di Tickets. finire di implementare manytoone da tickets su transportation_id
 

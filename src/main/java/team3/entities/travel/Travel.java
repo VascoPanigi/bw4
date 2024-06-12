@@ -1,8 +1,10 @@
 package team3.entities.travel;
 
 import jakarta.persistence.*;
-import team3.enums.TransportationType;
+import team3.entities.commute.Commute;
+import team3.entities.transportation.Transportation;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -10,50 +12,33 @@ import java.util.UUID;
 public class Travel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID travelID;
+    @GeneratedValue
+    private UUID id;
 
-    private int duration;
-    private String startingPoint;
-    private String terminal;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "travel_id")
+    private List<Commute> commutes;
 
-    @Enumerated(EnumType.STRING)
-    private TransportationType transportationType;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "travel_id")
+    private List<Transportation> transportations;
+    //  @ManyToOne
+    //  @JoinColumn(name = "commute")
+    //  private Commute commute;
+    //  private Transportation transportation;
+    private int travelTime;
 
-    public Travel(int duration, String startingPoint, String terminus, TransportationType transportationType) {
-        this.duration = duration;
-        this.startingPoint = startingPoint;
-        this.terminal = terminal;
-        this.transportationType = transportationType;
+    public Travel(int travelTime) {
+
+        this.travelTime = travelTime;
     }
 
-
-    public void setTransportationType(TransportationType transportationType) {
-        this.transportationType = transportationType;
+    public int getTravelTime() {
+        return travelTime;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public String getStartingPoint() {
-        return startingPoint;
-    }
-
-    public void setStartingPoint(String startingPoint) {
-        this.startingPoint = startingPoint;
-    }
-
-    public String getTerminal() {
-        return terminal;
-    }
-
-    public void setTerminal(String terminal) {
-        this.terminal = terminal;
+    public void setTravelTime(int travelTime) {
+        this.travelTime = travelTime;
     }
 
 }
