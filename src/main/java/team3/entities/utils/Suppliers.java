@@ -12,6 +12,7 @@ import team3.enums.MembershipPeriodicity;
 
 import java.time.LocalDate;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
@@ -108,5 +109,41 @@ public class Suppliers {
         }
     }
 
+    public static void createUserFromInput(Scanner scanner, EntityManager em, UserDao ud) {
+        // controllare il tipo dell-input
 
+        System.out.println("Insert your name: ");
+        String name = scanner.nextLine().toLowerCase();
+        System.out.println();
+
+        System.out.println("Insert your surname: ");
+        String surname = scanner.nextLine().toLowerCase();
+        System.out.println();
+
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            UserClass newUser = new UserClass(name, surname);
+            ud.save(newUser);
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public static void createUserFromValues(String name, String surname, UserDao ud, EntityManager em) {
+
+        // controllare il tipo dell-input
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            UserClass newUser = new UserClass(name, surname);
+            ud.save(newUser);
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
 }

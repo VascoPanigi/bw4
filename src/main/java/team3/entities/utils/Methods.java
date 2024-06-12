@@ -7,17 +7,7 @@
 //
 //public class Methods {
 //
-//    public static void createUserFromInput(String name, String surname, EntityManager em) {
-//        EntityTransaction transaction = em.getTransaction();
-//        UserDao ud = new UserDao(em);
-//        try {
-//            UserClass newUser = new UserClass(name, surname);
-//            ud.save(newUser);
-//        } catch (Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
-//            e.printStackTrace();
-//        }
+//    public static void App() {
+//
 //    }
 //}

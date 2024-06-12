@@ -1,6 +1,9 @@
 package team3;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Persistence;
 import team3.dao.CardDao;
 import team3.dao.MembershipDAO;
 import team3.dao.UserDao;
@@ -8,6 +11,7 @@ import team3.entities.user.UserClass;
 import team3.entities.utils.Suppliers;
 import team3.enums.MembershipPeriodicity;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -44,20 +48,20 @@ public class Application {
                     System.out.println("It seems that you don't have a card.");
                     System.out.println("Do you want to create one?");
                     System.out.println("1-Yes, 2-No");
-                    int userChoice = Integer.parseInt(scanner.nextLine());
+                    int userChoice = getUserChoice(1, 2);
                     switch (userChoice) {
                         case 1:
                             Suppliers.linkCardStartingFromUser(user, cd, em);
                             break;
                         case 2:
-                            System.out.println("Okay the f**k you");
+                            System.out.println("See you soon!");
                             return;
                     }
                 } else {
 
                     System.out.println(user.getCard().getExpiration_date().toEpochDay());
                     System.out.println(LocalDate.now().toEpochDay());
-                    if (user.getCard().getExpiration_date().toEpochDay() < LocalDate.now().toEpochDay()) {
+                    if (LocalDate.now().isAfter(user.getCard().getExpiration_date())) {
                         System.out.println("Your card is expired. Renovating it...");
                         cd.renovateCard(user.getCard());
                         System.out.println("Card renovated");
@@ -67,7 +71,7 @@ public class Application {
                 // una volta che ci troviamo qui, siamo sicuri al 100% che abbiamo sia card attiva che user
                 System.out.println("Which kind of membership do you wish to purchase? ");
                 System.out.println("1-weekly, 2-monthly");
-                int periodicity = Integer.parseInt(scanner.nextLine());
+                int periodicity = getUserChoice(1, 2);
 
                 // generazione membership a seconda della periodicity
                 switch (periodicity) {
@@ -84,28 +88,111 @@ public class Application {
             } catch (NoResultException nr) {
                 System.out.println("This user does not exist in our Database. Do you wish to register?");
                 System.out.println("1-Yes, 2-No");
-                int userChoice = Integer.parseInt(scanner.nextLine());
+                int userChoice = getUserChoice(1, 2);
                 switch (userChoice) {
                     case 1:
-                        createUserFromInput();
+                        Suppliers.createUserFromInput(scanner, em, ud);
                         break;
                     case 2:
                         System.out.println("See you soon!");
                         break;
                 }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a numeric value.");
             }
         }
     }
 
-//    public static void searchByTimeInterval() {
-//        while (true) {
-//            System.out.println();
-//            System.out.println("Hello, insert the year");
-//            System.out.println("If you wanna exit, type exit");
-//        }
-//
-//    }
+    public static void searchByTimeInterval() {
+        while (true) {
+            try {
+                System.out.println();
+                System.out.println("Hello, insert the starting year");
+                System.out.println("If you want to exit, type 0");
+                int startingYear = getInputYear();
+                if (startingYear == 0) break;
 
+                int startingMonth = getInputMonth("starting");
+                int startingDay = getInputDay("starting");
+
+                System.out.println("Now, insert the ending year");
+                int endingYear = getInputYear();
+                int endingMonth = getInputMonth("ending");
+                int endingDay = getInputDay("ending");
+                LocalDate start_date = LocalDate.of(startingYear, startingMonth, startingDay);
+                LocalDate ending_date = LocalDate.of(endingYear, endingMonth, endingDay);
+                if (start_date.isAfter(ending_date)) {
+                    System.out.println("The start date must be before the end date.");
+                    continue;
+                }
+
+                md.searchByTimeInterval(start_date, ending_date).forEach(System.out::println);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter numeric values.");
+            } catch (DateTimeException e) {
+                System.out.println("Invalid date. " + e.getMessage());
+            }
+
+        }
+
+    }
+
+    private static int getUserChoice(int n1, int n2) {
+        while (true) {
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+                if (choice >= n1 && choice <= n2) {
+                    return choice;
+                } else {
+                    System.out.println("Invalid choice. Please enter a value between " + n1 + " and " + n2 + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a numeric value.");
+            }
+        }
+    }
+
+    private static int getInputDay(String period) {
+        while (true) {
+            try {
+                System.out.println("Insert the " + period + " day");
+                int day = Integer.parseInt(scanner.nextLine());
+                if (day < 1 || day > 31) {
+                    System.out.println("Invalid day. Please enter a value from 1 to 31.");
+                } else {
+                    return day;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a numeric value.");
+            }
+        }
+    }
+
+    private static int getInputMonth(String period) {
+        while (true) {
+            try {
+                System.out.println("Insert the " + period + " month");
+                int month = Integer.parseInt(scanner.nextLine());
+                if (month < 1 || month > 12) {
+                    System.out.println("Invalid month. Please enter a value from 1 to 12.");
+                } else {
+                    return month;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a numeric value.");
+            }
+        }
+    }
+
+    private static int getInputYear() {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid year. Please enter a numeric value.");
+            }
+        }
+    }
 
     public static void main(String[] args) {
         System.out.println("Welcome to our system!");
@@ -136,16 +223,18 @@ public class Application {
                         scanner.close();
                         return;
                     case 1:
-                        createUserFromInput();
+                        Suppliers.createUserFromInput(scanner, em, ud);
                         break;
                     case 2:
                         manageDistributor();
                         break;
                     case 3:
-                        LocalDate start_date = LocalDate.of(2023, 1, 20);
-                        LocalDate ending_date = LocalDate.of(2025, 1, 20);
-
-                        md.searchByTimeInterval(start_date, ending_date).forEach(System.out::println);
+                        searchByTimeInterval();
+                        break;
+//                        LocalDate start_date = LocalDate.of(2023, 1, 20);
+//                        LocalDate ending_date = LocalDate.of(2025, 1, 20);
+//
+//                        md.searchByTimeInterval(start_date, ending_date).forEach(System.out::println);
 
                     default:
                         System.out.println("Invalid choice, try again.");
@@ -179,27 +268,5 @@ public class Application {
 
     }
 
-    public static void createUserFromInput() {
-        // controllare il tipo dell-input
 
-        System.out.println("Insert your name: ");
-        String name = scanner.nextLine().toLowerCase();
-        System.out.println();
-
-        System.out.println("Insert your surname: ");
-        String surname = scanner.nextLine().toLowerCase();
-        System.out.println();
-
-        EntityTransaction transaction = em.getTransaction();
-        try {
-            UserClass newUser = new UserClass(name, surname);
-            ud.save(newUser);
-        } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-
-    }
 }
