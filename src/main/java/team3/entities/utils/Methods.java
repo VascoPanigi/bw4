@@ -19,10 +19,9 @@ import team3.enums.TransportationType;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -302,8 +301,14 @@ List<Travel> travelList = trd.findByCommute(commute);
 
 
                 }
-                System.out.println(listOfTravel);
+            
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
+
+                Optional<Travel> nextTravel=  listOfTravel.stream().filter(travel -> travel.getDepartureTime().isAfter(currentTime)).min(Comparator.comparing(Travel:: getDepartureTime));
+                if (nextTravel.isPresent()) {
+                    System.out.println("The next available travel is at: " + nextTravel.get().getDepartureTime().format(formatter) );
+                } else System.out.println("No available travels!");
 //                 richiesta dati per cercare user nel database
 //                 una volta che ci troviamo qui, siamo sicuri al 100% che abbiamo sia card attiva che user
 
