@@ -6,12 +6,15 @@ import jakarta.persistence.EntityTransaction;
 import team3.dao.CardDao;
 import team3.dao.UserDao;
 import team3.entities.card.Card;
+import team3.entities.commute.Commute;
 import team3.entities.distributor.AuthorizedDistributor;
 import team3.entities.distributor.AutomaticDistributor;
 import team3.entities.distributor.Distributor;
+import team3.entities.transportation.Transportation;
 import team3.entities.travel_document.Membership;
 import team3.entities.user.UserClass;
 import team3.enums.MembershipPeriodicity;
+import team3.enums.TransportationType;
 
 import java.time.LocalDate;
 import java.util.Random;
@@ -26,21 +29,17 @@ public class Suppliers {
         return new Card(randomDate);
     };
     public static Supplier<AuthorizedDistributor> authorizedDistributorSupplier = AuthorizedDistributor::new;
-    static Faker fkr = new Faker();
-    public static Supplier<UserClass> userSupplier = () -> {
-        String[] fullname;
-        do {
-            fullname = fkr.gameOfThrones().character().split(" ");
-        } while (fullname.length < 2);
-
-//        String[] fullname = fkr.gameOfThrones().character().split(" ");
-
-        String name = fullname[0].toLowerCase();
-        String surname = fullname[1].toLowerCase();
-
-        return new UserClass(name, surname);
-    };
     static Random random = new Random();
+    public static Supplier<Transportation> transportationSupplier = () -> {
+        Transportation transportation = new Transportation();
+        transportation.setType(random.nextBoolean() ? TransportationType.BUS : TransportationType.TRAM);
+        if (transportation.getType().toString().toLowerCase().equals("bus")) {
+            transportation.setCapacity(50);
+        } else {
+            transportation.setCapacity(100);
+        }
+        return transportation;
+    };
     public static Supplier<Membership> membershipSupplier = () -> {
         // generate random periodicity
         MembershipPeriodicity[] periocityValues = MembershipPeriodicity.values();
@@ -67,9 +66,36 @@ public class Suppliers {
             return new AuthorizedDistributor();
         }
     };
+    //    public static Supplier<Travel> travelSupplier = () -> {
+//        String origin = fkr.address().city();
+//        String destination = fkr.address().city();
+//        LocalDateTime departureTime = LocalDateTime.now().plusDays(fkr.number().numberBetween(1, 30));
+//        LocalDateTime arrivalTime = departureTime.plusHours(fkr.number().numberBetween(1, 10));
+//
+//        return new Travel(origin, destination, departureTime, arrivalTime);
+//    };
     public static Supplier<AutomaticDistributor> automaticDistributorSupplier = () -> {
         Boolean inService = random.nextBoolean();
         return new AutomaticDistributor(inService);
+    };
+    static Faker fkr = new Faker();
+    public static Supplier<UserClass> userSupplier = () -> {
+        String[] fullname;
+        do {
+            fullname = fkr.gameOfThrones().character().split(" ");
+        } while (fullname.length < 2);
+
+//        String[] fullname = fkr.gameOfThrones().character().split(" ");
+
+        String name = fullname[0].toLowerCase();
+        String surname = fullname[1].toLowerCase();
+
+        return new UserClass(name, surname);
+    };
+    public static Supplier<Commute> commuteSupplier = () -> {
+        String name = fkr.address().city();
+        String terminal = fkr.address().city();
+        return new Commute(name, terminal);
     };
 
     public static Supplier<LocalDate> randomDateSupplier(LocalDate startDate, LocalDate endDate) {

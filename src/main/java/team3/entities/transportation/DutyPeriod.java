@@ -15,12 +15,19 @@ public class DutyPeriod {
     private UUID id;
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "transportation_id")
     private Transportation transportation;
 
     private LocalDate startingDate;
     private LocalDate endingDate;
+
+
+    public DutyPeriod(Transportation transportation, LocalDate startingDate, LocalDate endingDate) {
+        this.transportation = transportation;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+    }
 
     public UUID getId() {
         return id;

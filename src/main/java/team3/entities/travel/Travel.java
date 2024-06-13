@@ -37,4 +37,15 @@ public class Travel {
         this.travelTime = travelTime;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public Transportation getTransportation() {
+        return transportation;
+    }
+
+    public void setTransportation(Transportation transportation) {
+        this.transportation = transportation;
+    }
 }

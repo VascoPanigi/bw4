@@ -29,9 +29,8 @@ public class Commute {
     public Commute() {
     }
 
-    public Commute(String departure, int averageTravelTime, String terminal) {
+    public Commute(String departure, String terminal) {
         this.departure = departure;
-        this.averageTravelTime = averageTravelTime;
         this.terminal = terminal;
     }
 
@@ -58,4 +57,9 @@ public class Commute {
     public void setTerminal(String terminal) {
         this.terminal = terminal;
     }
+
+    public UUID getCommute_id() {
+        return commute_id;
+    }
+
 }

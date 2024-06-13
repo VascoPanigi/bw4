@@ -28,8 +28,9 @@ public class Methods {
     private static final CardDao cd = new CardDao(em);
     private static final DistributorDAO dd = new DistributorDAO(em);
     private static final TicketDAO td = new TicketDAO(em);
+    private static final CommuteDAO cmd = new CommuteDAO(em);
+    private static final TravelDao trd = new TravelDao(em);
     private static final Random random = new Random();
-
 
     public static void manageDistributor() {
         while (true) {

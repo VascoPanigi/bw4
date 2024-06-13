@@ -8,19 +8,27 @@ import java.util.UUID;
 @Entity
 @Table(name = "maintenancePeriod")
 public class MaintenancePeriod {
-
-
     @Id
     @GeneratedValue
     private UUID id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "transportation_id")
-
     private Transportation transportation;
+
 
     private LocalDate startingDate;
     private LocalDate endingDate;
+
+
+    public MaintenancePeriod(Transportation transportation, LocalDate startingDate, LocalDate endingDate) {
+        this.transportation = transportation;
+        this.startingDate = startingDate;
+        this.endingDate = endingDate;
+    }
+
+    public MaintenancePeriod() {
+    }
 
 
     public UUID getId() {

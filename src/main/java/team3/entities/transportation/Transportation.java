@@ -2,7 +2,6 @@ package team3.entities.transportation;
 
 import jakarta.persistence.*;
 import team3.entities.travel.Travel;
-import team3.enums.TransportationState;
 import team3.enums.TransportationType;
 
 import java.util.ArrayList;
@@ -23,26 +22,30 @@ public class Transportation {
 
     private int capacity;
 
-    @Enumerated(EnumType.STRING)
-    private TransportationState state;
+//    @Enumerated(EnumType.STRING)
+//    private TransportationState state;
 
-    @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
-    private DutyPeriod endutyPeriod;
+    @OneToMany(mappedBy = "transportation", cascade = CascadeType.ALL)
+    private List<DutyPeriod> dutyPeriods = new ArrayList<>();
 
-    @OneToOne(mappedBy = "transportation", cascade = CascadeType.ALL)
-    private MaintenancePeriod maintenancePeriod;
+    @OneToMany(mappedBy = "transportation", cascade = CascadeType.ALL)
+    private List<MaintenancePeriod> maintenancePeriods = new ArrayList<>();
 
     @OneToMany(mappedBy = "transportation", cascade = CascadeType.ALL)
     private List<Travel> travels = new ArrayList<>();
 
     //@OneToMany --- vogliamo una lista di Tickets. finire di implementare manytoone da tickets su transportation_id
 
-    public UUID getId() {
-        return id;
+    public Transportation(TransportationType type, int capacity) {
+        this.type = type;
+        this.capacity = capacity;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public Transportation() {
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public TransportationType getType() {
@@ -59,29 +62,5 @@ public class Transportation {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
-    }
-
-    public TransportationState getState() {
-        return state;
-    }
-
-    public void setState(TransportationState state) {
-        this.state = state;
-    }
-
-    public DutyPeriod getEndutyPeriod() {
-        return endutyPeriod;
-    }
-
-    public void setEndutyPeriod(DutyPeriod endutyPeriod) {
-        this.endutyPeriod = endutyPeriod;
-    }
-
-    public MaintenancePeriod getMaintenancePeriod() {
-        return maintenancePeriod;
-    }
-
-    public void setMaintenancePeriod(MaintenancePeriod maintenancePeriod) {
-        this.maintenancePeriod = maintenancePeriod;
     }
 }
