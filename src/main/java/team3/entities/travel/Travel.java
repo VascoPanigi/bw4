@@ -30,6 +30,10 @@ public class Travel {
 
     private long travelTime;
 
+    public Travel() {
+
+    }
+
     public Travel(long travelTime) {
         this.travelTime = travelTime;
         this.departureTime = null;
@@ -78,5 +82,15 @@ public class Travel {
 
     public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Travel{" +
+                "travelTime=" + travelTime +
+                ", arrivalTime=" + arrivalTime +
+                ", departureTime=" + departureTime +
+                ", id=" + id +
+                '}';
     }
 }
