@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@NamedQuery(name = "isOnDuty", query = "SELECT m FROM DutyPeriod m WHERE m.transportation = :transportation")
 @Table(name = "DutyPeriod")
 public class DutyPeriod {
 
@@ -22,6 +23,8 @@ public class DutyPeriod {
     private LocalDate startingDate;
     private LocalDate endingDate;
 
+    public DutyPeriod() {
+    }
 
     public DutyPeriod(Transportation transportation, LocalDate startingDate, LocalDate endingDate) {
         this.transportation = transportation;

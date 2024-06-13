@@ -67,12 +67,4 @@ public class TicketDAO {
         transaction.commit();
         System.out.println("Ticket " + ticket.getId() + " has been validated");
     }
-
-//    public Ticket findValidTickets (Card card)
-
-//    public Ticket findValidTickets(Card card) {
-//        TypedQuery<Ticket> userQuery = em.createNamedQuery("findValidTickets", Ticket.class);
-//        userQuery.setParameter("isValid", isValid);
-//        return userQuery.getSingleResult();
-//    }
 }

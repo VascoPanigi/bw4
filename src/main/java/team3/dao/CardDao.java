@@ -69,9 +69,9 @@ public class CardDao {
         return false;
     }
 
-    public Ticket findValidTickets(Card card) {
+    public List<Ticket> findValidTickets(Card card) {
         TypedQuery<Ticket> userQuery = em.createNamedQuery("findValidTickets", Ticket.class);
         userQuery.setParameter("card", card);
-        return userQuery.getSingleResult();
+        return userQuery.getResultList();
     }
 }

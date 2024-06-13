@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.card_ticket = :card")
+@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.card_ticket = :card AND t.isValid = null")
 @Table(name = "Tickets")
 public class Ticket extends TravelDocument {
 

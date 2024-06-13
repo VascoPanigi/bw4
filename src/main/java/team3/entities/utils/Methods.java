@@ -9,6 +9,8 @@ import team3.entities.commute.Commute;
 import team3.entities.distributor.AuthorizedDistributor;
 import team3.entities.distributor.AutomaticDistributor;
 import team3.entities.distributor.Distributor;
+import team3.entities.transportation.DutyPeriod;
+import team3.entities.transportation.MaintenancePeriod;
 import team3.entities.transportation.Transportation;
 import team3.entities.travel.Travel;
 import team3.entities.travel_document.Membership;
@@ -79,9 +81,25 @@ public class Methods {
                         System.out.println("See you soon!");
                         return;
                 }
+//------------------------------------------------------------------------------
+                System.out.println("Do you want to check how many membership this distributor has sold?");
+                System.out.println("1- Yes, 2- No");
+
+                int yesOrNoWhoKnowsHmm = getUserChoice(1, 2);
+
+                switch (yesOrNoWhoKnowsHmm) {
+                    case 1:
+                        searchByTimeInterval(distributor);
+                        break;
+                    case 2:
+                        System.out.println("You can continue with the login.");
+                        break;
+                }
+//------------------------------------------------------------------------------
 
                 // richiesta dati per cercare user nel database
                 System.out.println();
+                System.out.println("----------LOGIN----------");
                 System.out.println("Please insert your name: ");
                 String name = scanner.nextLine().toLowerCase();
                 System.out.println();
@@ -219,12 +237,7 @@ public class Methods {
                         System.out.println("We found a valid card!\n");
                     }
                 }
-                //arrivati a questo punto l'utente è identificato
 
-
-                // COMMUTE ----- TRAVEL ----- TRANSPORTATION
-
-                //for loop che itera sulle commute -> per ogni commute crea 1 viaggio ogni ora -> a questo dobbiamo collegare
                 System.out.println();
                 System.out.println("Where do you want to go?");
                 List<Commute> commuteList = cmd.findAllCommutes();
@@ -242,10 +255,8 @@ public class Methods {
                 Commute commute = null;
 
                 switch (destination) {
-
                     case 1:
                         commute = commuteList.get(0);
-
                         break;
                     case 2:
                         commute = commuteList.get(1);
@@ -259,10 +270,8 @@ public class Methods {
                     case 5:
                         commute = commuteList.get(4);
                         break;
-
                     default:
                         System.out.println("Sorry, commute not found!");
-
                 }
 
                 System.out.println("Your destination is: " + commute.getTerminal() + ". Departure is: " + commute.getDeparture());
@@ -279,23 +288,15 @@ public class Methods {
                 Transportation transportation = null;
                 List<Travel> listOfTravel = null;
                 LocalDateTime currentTime = LocalDateTime.now();
-                switch (transportationChoice) {
-                    case 1:
-                        listOfTravel = travelList.stream()
-                                .filter(travel -> travel.getTransportation().getType().equals(TransportationType.TRAM))
-                                .collect(Collectors.toList());
-                        break;
-
-
-                    case 2:
-
-                        listOfTravel = travelList.stream()
-                                .filter(travel -> travel.getTransportation().getType().equals(TransportationType.BUS))
-                                .collect(Collectors.toList());
-                        break;
-
-
-                }
+                listOfTravel = switch (transportationChoice) {
+                    case 1 -> travelList.stream()
+                            .filter(travel -> travel.getTransportation().getType().equals(TransportationType.TRAM) && dpd.isOnDuty(travel.getTransportation()))
+                            .collect(Collectors.toList());
+                    case 2 -> travelList.stream()
+                            .filter(travel -> travel.getTransportation().getType().equals(TransportationType.BUS) && dpd.isOnDuty(travel.getTransportation()))
+                            .collect(Collectors.toList());
+                    default -> listOfTravel;
+                };
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -303,7 +304,12 @@ public class Methods {
                 Optional<Travel> nextTravel = listOfTravel.stream().filter(travel -> travel.getDepartureTime().isAfter(currentTime)).min(Comparator.comparing(Travel::getDepartureTime));
                 if (nextTravel.isPresent()) {
                     System.out.println("The next available travel is at: " + nextTravel.get().getDepartureTime().format(formatter));
+                    transportation = nextTravel.get().getTransportation();
                 } else System.out.println("No available travels!");
+
+//                boolean hasValidMembership = cd.isValidMembership(user.getCard());
+//                boolean hasValidTicket = td.findValidTickets(user.getCard()) != null;
+//
 
                 System.out.println("Do you want to use your membership or a ticket?");
                 System.out.println("1 Membership, 2 Ticket");
@@ -311,54 +317,22 @@ public class Methods {
                 switch (input) {
                     case 1:
                         boolean hasValidMembership = cd.isValidMembership(user.getCard());
-                        if (!hasValidMembership) {
+                        if (hasValidMembership) {
+                            System.out.println("Welcome on board!");
+                            break;
+                        } else {
                             System.out.println("You should use a ticket");
-                            Ticket ticket = cd.findValidTickets(user.getCard());
-
                         }
                     case 2:
-                        Ticket ticket = cd.findValidTickets(user.getCard());
-                        td.validateTicket(ticket, transportation);
+                        List<Ticket> tickets = cd.findValidTickets(user.getCard());
+                        if (tickets.isEmpty()) {
+                            System.out.println("It seems like you don't have tickets in your card! Try again.");
+                        } else {
+                            Ticket singleValidTicket = tickets.get(random.nextInt(0, tickets.size()));
+                            td.validateTicket(singleValidTicket, transportation);
+                            break;
+                        }
                 }
-//                 richiesta dati per cercare user nel database
-//                 una volta che ci troviamo qui, siamo sicuri al 100% che abbiamo sia card attiva che user
-
-//                System.out.println("What do you wish to purchase?");
-//                System.out.println("1- Membership, 2- Single ticket");
-//                int membershipOrTicket = getUserChoice(1, 2);
-//                switch (membershipOrTicket) {
-//                    case 1:
-//                        System.out.println("Which kind of membership do you wish to purchase? ");
-//                        System.out.println("1-weekly, 2-monthly");
-//                        int periodicity = getUserChoice(1, 2);
-//
-//                        // generazione membership a seconda della periodicity
-//                        switch (periodicity) {
-//                            case 1:
-//                                md.addMembershipToCard(user.getCard(), MembershipPeriodicity.WEEKLY, distributor);
-//                                System.out.println("7 days membership added to your card.");
-//                                break;
-//                            case 2:
-//                                md.addMembershipToCard(user.getCard(), MembershipPeriodicity.MONTHLY, distributor);
-//                                System.out.println("30 days membership added to your card.");
-//                                break;
-//                        }
-//                    case 2:
-//                        td.addTicketToCard(user.getCard(), distributor);
-//                        System.out.println("Ticket added to your card!");
-//                        break;
-//                }
-//                System.out.println("Do you wish to perform another action?");
-//                System.out.println("1- Yes, 2- No");
-//
-//                int keepBuying = getUserChoice(1, 2);
-//                switch (keepBuying) {
-//                    case 1:
-//                        break;
-//                    case 2:
-//                        System.out.println("See you soon! :D \n");
-//                        return;
-//                }
 
             } catch (NoResultException nr) {
                 System.out.println("This user does not exist in our Database. Do you wish to register?");
@@ -376,10 +350,9 @@ public class Methods {
                 System.out.println("Invalid input. Please enter a numeric value.");
             }
         }
-
     }
 
-    public static void searchByTimeInterval() {
+    public static void searchByTimeInterval(Distributor distributor) {
         while (true) {
             try {
                 System.out.println();
@@ -402,20 +375,20 @@ public class Methods {
                     continue;
                 }
 
-                List<Membership> results = md.searchByTimeInterval(start_date, ending_date);
+                List<Membership> results = md.searchByTimeInterval(distributor, start_date, ending_date);
                 if (results.isEmpty()) {
                     System.out.println("No memberships found within the given date range.");
+                    return;
                 } else {
                     results.forEach(System.out::println);
+                    return;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter numeric values.");
             } catch (DateTimeException e) {
                 System.out.println("Invalid date. " + e.getMessage());
             }
-
         }
-
     }
 
     public static void generateTravelTable() {
@@ -449,9 +422,17 @@ public class Methods {
             System.out.println("daje roma");
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             Transportation newTransport = Suppliers.transportationSupplier.get();
             transportd.save(newTransport);
+            boolean whoKnows = random.nextBoolean();
+            if (whoKnows) {
+                DutyPeriod newDutyP = Suppliers.dutyPeriodSupplier(newTransport);
+                dpd.save(newDutyP);
+            } else {
+                MaintenancePeriod newMaintenanceP = Suppliers.maintenancePeriodSupplier(newTransport);
+                mpd.save(newMaintenanceP);
+            }
         }
     }
 
@@ -556,12 +537,49 @@ public class Methods {
 
 
     public static void App() {
+        //--------------------------------------------------------
+        //SCOMMENTARE I TRE RICHIAMI DI METODI QUI DI SEGUITO PER RIEMPIRE DATABASE DI COMMUTES, TRAVELS E TRANSPORTATIONS
+        //--------------------------------------------------------
 //        createCommutesAndTransportations();
 //        generateTravelTable();
-//
 //        initializeDistributors();
 
 
+        while (true) {
+            System.out.println("Which operation do you wish to perform?");
+            System.out.println("1-Create a new User, 2-Buy a membership, 3- Check your memberships, 4- book a travel");
+            System.out.println("Type 0 to exit.");
+
+            try {
+                int userChoice = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (userChoice) {
+                    case 0:
+                        System.out.println("See you!");
+                        scanner.close();
+                        return;
+                    case 1:
+                        Suppliers.createUserFromInput(scanner, em, ud);
+                        break;
+                    case 2:
+                        manageDistributor();
+                        break;
+                    case 3:
+                        checkValidMembership();
+                        break;
+                    case 4:
+                        bookATravel();
+                        break;
+                    default:
+                        System.out.println("Invalid choice, try again.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine();
+            }
+        }
 //        for (int i = 0; i < 10; i++) {
 //            Commute newTransport = Suppliers.commuteSupplier.get();
 //            cmd.save(newTransport);
@@ -614,47 +632,6 @@ public class Methods {
         //abbiamo la lista di mezzi
 
         //per ogni tratta - creare 10 viaggi, al viaggio creato - setcommute e set-transportation
-
-
-        while (true) {
-            System.out.println("Which operation do you wish to perform?");
-            System.out.println("1-Create a new User, 2-Buy a membership, 3- Check your memberships, 4- book a travel");
-            System.out.println("Type 0 to exit.");
-
-            try {
-                int userChoice = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (userChoice) {
-                    case 0:
-                        System.out.println("See you!");
-                        scanner.close();
-                        return;
-                    case 1:
-                        Suppliers.createUserFromInput(scanner, em, ud);
-                        break;
-                    case 2:
-                        manageDistributor();
-                        break;
-                    case 3:
-                        checkValidMembership();
-                        break;
-                    case 4:
-                        bookATravel();
-                        break;
-
-                    case 5:
-                        searchByTimeInterval();
-                        break;
-                    default:
-                        System.out.println("Invalid choice, try again.");
-                        break;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-                scanner.nextLine();
-            }
-        }
 
 
 //        UserClass gabibbo = new UserClass("gabibbo", "scotti");

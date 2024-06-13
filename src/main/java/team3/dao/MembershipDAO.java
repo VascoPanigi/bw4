@@ -63,10 +63,11 @@ public class MembershipDAO {
         System.out.println("The membership has been created: " + membership.getId());
     }
 
-    public List<Membership> searchByTimeInterval(LocalDate start_date, LocalDate ending_date) {
+    public List<Membership> searchByTimeInterval(Distributor distributor, LocalDate start_date, LocalDate ending_date) {
         TypedQuery<Membership> membershipTypedQuery = em.createNamedQuery("searchByTimeInterval", Membership.class);
         membershipTypedQuery.setParameter("start_date", start_date);
         membershipTypedQuery.setParameter("ending_date", ending_date);
+        membershipTypedQuery.setParameter("distributor", distributor);
         return membershipTypedQuery.getResultList();
     }
 

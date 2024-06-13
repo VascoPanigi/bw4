@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 
-@NamedQuery(name = "findByCommute", query = "SELECT t FROM Travel t WHERE t.commute = :commute ")
+@NamedQuery(name = "findByCommute", query = "SELECT t FROM Travel t WHERE t.commute = :commute")
 @Table(name = "travel")
 public class Travel {
 

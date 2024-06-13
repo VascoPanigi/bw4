@@ -10,6 +10,8 @@ import team3.entities.commute.Commute;
 import team3.entities.distributor.AuthorizedDistributor;
 import team3.entities.distributor.AutomaticDistributor;
 import team3.entities.distributor.Distributor;
+import team3.entities.transportation.DutyPeriod;
+import team3.entities.transportation.MaintenancePeriod;
 import team3.entities.transportation.Transportation;
 import team3.entities.travel.Travel;
 import team3.entities.travel_document.Membership;
@@ -68,6 +70,8 @@ public class Suppliers {
             return new AuthorizedDistributor();
         }
     };
+
+    ;
     //    public static Supplier<Travel> travelSupplier = () -> {
 //        String origin = fkr.address().city();
 //        String destination = fkr.address().city();
@@ -99,6 +103,38 @@ public class Suppliers {
         String terminal = fkr.address().city();
         return new Commute(name, terminal);
     };
+
+    public static DutyPeriod dutyPeriodSupplier(Transportation transportation) {
+        DutyPeriod newDutyPeriod = new DutyPeriod();
+        newDutyPeriod.setTransportation(transportation);
+        Boolean whoKnows = random.nextBoolean();
+        int randomNumber = random.nextInt(1, 90);
+        LocalDate startDutyTime = null;
+        if (whoKnows) {
+            startDutyTime = LocalDate.now().minusDays(randomNumber);
+        } else {
+            startDutyTime = LocalDate.now().minusDays(randomNumber);
+        }
+        newDutyPeriod.setStartingDate(startDutyTime);
+        newDutyPeriod.setEndingDate(startDutyTime.plusDays(randomNumber));
+        return newDutyPeriod;
+    }
+
+    public static MaintenancePeriod maintenancePeriodSupplier(Transportation transportation) {
+        MaintenancePeriod newMaintenancePeriod = new MaintenancePeriod();
+        newMaintenancePeriod.setTransportation(transportation);
+        boolean whoKnows = random.nextBoolean();
+        int randomNumber = random.nextInt(1, 90);
+        LocalDate startDutyTime = null;
+        if (whoKnows) {
+            startDutyTime = LocalDate.now().minusDays(randomNumber);
+        } else {
+            startDutyTime = LocalDate.now().minusDays(randomNumber);
+        }
+        newMaintenancePeriod.setStartingDate(startDutyTime);
+        newMaintenancePeriod.setEndingDate(startDutyTime.plusDays(randomNumber));
+        return newMaintenancePeriod;
+    }
 
     public static Supplier<LocalDate> randomDateSupplier(LocalDate startDate, LocalDate endDate) {
         // generate random date -- classic method cause faker.date().between() does not provide expected values. Daje
