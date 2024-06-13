@@ -4,10 +4,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import team3.entities.card.Card;
 import team3.entities.distributor.Distributor;
+import team3.entities.transportation.Transportation;
 import team3.entities.travel_document.Ticket;
 import team3.exceptions.NotFoundException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class TicketDAO {
@@ -56,9 +58,21 @@ public class TicketDAO {
         System.out.println("The ticket has been created: " + ticket.getId());
     }
 
-//    public List<Ticket> findValidTickets(Boolean isValid) {
+    public void validateTicket(Ticket ticket, Transportation transportation) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        ticket.setValid(LocalDateTime.now());
+        ticket.setTransportation(transportation);
+        em.persist(ticket);
+        transaction.commit();
+        System.out.println("Ticket " + ticket.getId() + " has been validated");
+    }
+
+//    public Ticket findValidTickets (Card card)
+
+//    public Ticket findValidTickets(Card card) {
 //        TypedQuery<Ticket> userQuery = em.createNamedQuery("findValidTickets", Ticket.class);
 //        userQuery.setParameter("isValid", isValid);
-//        return userQuery.getResultList();
+//        return userQuery.getSingleResult();
 //    }
 }

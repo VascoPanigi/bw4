@@ -12,6 +12,7 @@ import team3.entities.distributor.Distributor;
 import team3.entities.transportation.Transportation;
 import team3.entities.travel.Travel;
 import team3.entities.travel_document.Membership;
+import team3.entities.travel_document.Ticket;
 import team3.entities.user.UserClass;
 import team3.enums.MembershipPeriodicity;
 import team3.enums.TransportationType;
@@ -19,7 +20,6 @@ import team3.enums.TransportationType;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -228,12 +228,13 @@ public class Methods {
                 System.out.println();
                 System.out.println("Where do you want to go?");
                 List<Commute> commuteList = cmd.findAllCommutes();
-                if(commuteList.isEmpty())
-                { System.out.println("commutes not found!");
+                if (commuteList.isEmpty()) {
+                    System.out.println("commutes not found!");
                     createCommutesAndTransportations();
-                generateTravelTable();}
-AtomicInteger counter = new AtomicInteger(1);
-                commuteList .stream().map(Commute::getTerminal).forEach(terminal -> {
+                    generateTravelTable();
+                }
+                AtomicInteger counter = new AtomicInteger(1);
+                commuteList.stream().map(Commute::getTerminal).forEach(terminal -> {
                     System.out.println(counter + "- " + terminal);
                     counter.addAndGet(1);
                 });
@@ -243,20 +244,20 @@ AtomicInteger counter = new AtomicInteger(1);
                 switch (destination) {
 
                     case 1:
-                        commute= commuteList.get(0);
+                        commute = commuteList.get(0);
 
                         break;
-                        case 2:
-                        commute= commuteList.get(1);
+                    case 2:
+                        commute = commuteList.get(1);
                         break;
-                        case 3:
-                        commute= commuteList.get(2);
+                    case 3:
+                        commute = commuteList.get(2);
                         break;
-                        case 4:
-                        commute= commuteList.get(3);
+                    case 4:
+                        commute = commuteList.get(3);
                         break;
-                        case 5:
-                        commute= commuteList.get(4);
+                    case 5:
+                        commute = commuteList.get(4);
                         break;
 
                     default:
@@ -267,13 +268,7 @@ AtomicInteger counter = new AtomicInteger(1);
                 System.out.println("Your destination is: " + commute.getTerminal() + ". Departure is: " + commute.getDeparture());
 
 
-
-
-
-
-
-
-List<Travel> travelList = trd.findByCommute(commute);
+                List<Travel> travelList = trd.findByCommute(commute);
                 System.out.println();
                 System.out.println("Which transportation do you wish to take?");
                 System.out.println("1- Tram, 2- Bus");
@@ -283,10 +278,10 @@ List<Travel> travelList = trd.findByCommute(commute);
 
                 Transportation transportation = null;
                 List<Travel> listOfTravel = null;
-                LocalDateTime currentTime= LocalDateTime.now();
+                LocalDateTime currentTime = LocalDateTime.now();
                 switch (transportationChoice) {
                     case 1:
-                         listOfTravel = travelList.stream()
+                        listOfTravel = travelList.stream()
                                 .filter(travel -> travel.getTransportation().getType().equals(TransportationType.TRAM))
                                 .collect(Collectors.toList());
                         break;
@@ -301,14 +296,30 @@ List<Travel> travelList = trd.findByCommute(commute);
 
 
                 }
-            
+
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
 
-                Optional<Travel> nextTravel=  listOfTravel.stream().filter(travel -> travel.getDepartureTime().isAfter(currentTime)).min(Comparator.comparing(Travel:: getDepartureTime));
+                Optional<Travel> nextTravel = listOfTravel.stream().filter(travel -> travel.getDepartureTime().isAfter(currentTime)).min(Comparator.comparing(Travel::getDepartureTime));
                 if (nextTravel.isPresent()) {
-                    System.out.println("The next available travel is at: " + nextTravel.get().getDepartureTime().format(formatter) );
+                    System.out.println("The next available travel is at: " + nextTravel.get().getDepartureTime().format(formatter));
                 } else System.out.println("No available travels!");
+
+                System.out.println("Do you want to use your membership or a ticket?");
+                System.out.println("1 Membership, 2 Ticket");
+                int input = getUserChoice(1, 2);
+                switch (input) {
+                    case 1:
+                        boolean hasValidMembership = cd.isValidMembership(user.getCard());
+                        if (!hasValidMembership) {
+                            System.out.println("You should use a ticket");
+                            Ticket ticket = cd.findValidTickets(user.getCard());
+
+                        }
+                    case 2:
+                        Ticket ticket = cd.findValidTickets(user.getCard());
+                        td.validateTicket(ticket, transportation);
+                }
 //                 richiesta dati per cercare user nel database
 //                 una volta che ci troviamo qui, siamo sicuri al 100% che abbiamo sia card attiva che user
 
@@ -529,7 +540,7 @@ List<Travel> travelList = trd.findByCommute(commute);
 
     }
 
-    public  static void initializeDistributors() {
+    public static void initializeDistributors() {
         for (int i = 0; i < 5; i++) {
             AuthorizedDistributor newDistributor = Suppliers.authorizedDistributorSupplier.get();
             dd.save(newDistributor);
@@ -547,11 +558,8 @@ List<Travel> travelList = trd.findByCommute(commute);
     public static void App() {
 //        createCommutesAndTransportations();
 //        generateTravelTable();
-
+//
 //        initializeDistributors();
-
-
-
 
 
 //        for (int i = 0; i < 10; i++) {
@@ -632,7 +640,7 @@ List<Travel> travelList = trd.findByCommute(commute);
                         checkValidMembership();
                         break;
                     case 4:
-                      bookATravel();
+                        bookATravel();
                         break;
 
                     case 5:
