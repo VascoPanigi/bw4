@@ -47,7 +47,6 @@ public class TicketDAO {
 
         Ticket ticket = new Ticket(LocalDate.now());
 
-
         transaction.begin();
         ticket.setCard_ticket(card);
         ticket.setDistributor(distributor);

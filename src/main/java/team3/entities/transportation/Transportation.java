@@ -10,6 +10,12 @@ import java.util.UUID;
 
 @Entity
 //@NamedQuery(name="findInServiceTransportation",  query = "SELECT t FROM Transportation t WHERE t.TransportationState = :TransportationState")
+
+@NamedQueries({
+        @NamedQuery(name = "findTramQuery", query = "SELECT t FROM Transportation t WHERE t.type = :tram"),
+        @NamedQuery(name = "findBusQuery", query = "SELECT t FROM Transportation t WHERE t.type = :bus"),
+        @NamedQuery(name = "findAllTransportation", query = "SELECT t FROM Transportation t"),
+})
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "transportation")
 public class Transportation {
@@ -62,5 +68,15 @@ public class Transportation {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Transportation{" +
+                "id=" + id +
+                ", type=" + type +
+                ", capacity=" + capacity +
+                '}';
     }
 }

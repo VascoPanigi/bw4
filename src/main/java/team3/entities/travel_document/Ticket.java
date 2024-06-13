@@ -9,13 +9,15 @@ import team3.entities.distributor.Distributor;
 import team3.entities.transportation.Transportation;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
 //@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.isValid = :isValid")
 @Table(name = "Tickets")
 public class Ticket extends TravelDocument {
-    private boolean isValid;
+
+    private LocalDateTime isValid;
 
     @ManyToOne
     @JoinColumn(name = "transportation_id")
@@ -31,7 +33,7 @@ public class Ticket extends TravelDocument {
 
     public Ticket(LocalDate issueDate) {
         super(issueDate);
-        this.isValid = true;
+        this.isValid = null;
     }
 
     public Ticket() {
@@ -53,11 +55,11 @@ public class Ticket extends TravelDocument {
         this.distributor = distributor;
     }
 
-    public boolean isValid() {
+    public LocalDateTime isValid() {
         return isValid;
     }
 
-    public void setValid(boolean valid) {
+    public void setValid(LocalDateTime valid) {
         isValid = valid;
     }
 

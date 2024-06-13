@@ -2,9 +2,11 @@ package team3.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team3.entities.commute.Commute;
 import team3.exceptions.NotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class CommuteDAO {
@@ -36,4 +38,11 @@ public class CommuteDAO {
         transaction.commit();
         System.out.println("The commute with id: " + found.getCommute_id() + " has been eliminated from our system!");
     }
+
+
+    public List<Commute> findAllCommutes() {
+        TypedQuery<Commute> findAllCommutes = em.createNamedQuery("findAllCommutes", Commute.class);
+        return findAllCommutes.getResultList();
+    }
+
 }
