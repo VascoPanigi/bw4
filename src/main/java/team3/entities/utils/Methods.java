@@ -22,6 +22,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Methods {
     private static final Scanner scanner = new Scanner(System.in);
@@ -174,7 +175,7 @@ public class Methods {
 //    public static void bookATravel() {
 //        while (true) {
 //            try {
-//                System.out.println("Hello, to book a travel you must be identified?");
+//                System.out.println("Hello, to book a travel you must be identified");
 //                System.out.println("If you want to exit, type 'exit'");
 //
 //                System.out.println();
@@ -223,44 +224,91 @@ public class Methods {
 //                // COMMUTE ----- TRAVEL ----- TRANSPORTATION
 //
 //                //for loop che itera sulle commute -> per ogni commute crea 1 viaggio ogni ora -> a questo dobbiamo collegare
-//
-//
 //                System.out.println();
-//                System.out.println("Which transportation do you wish to take?");
-//                System.out.println("1- Tram, 2- Bus");
+//                System.out.println("Where do you want to go?");
+//                List<Commute> commuteList = cmd.findAllCommutes();
+//                if(commuteList.isEmpty())
+//                { System.out.println("commutes not found!");
+//                    createCommutesAndTransportations();
+//                generateTravelTable();}
+//AtomicInteger counter = new AtomicInteger(1);
+//                commuteList .stream().map(Commute::getTerminal).forEach(terminal -> {
+//                    System.out.println(counter + "- " + terminal);
+//                    counter.addAndGet(1);
+//                });
+//                int destination = Integer.parseInt(scanner.nextLine());
+//                Commute commute = null;
 //
-//                int transportationChoice = getUserChoice(1, 2);
+//                switch (destination) {
 //
-//                Transportation transportation = null;
-//                switch (transportationChoice) {
 //                    case 1:
-//                        // dobbiamo prendere tutti i tram nel DB, stampare su schermo la Destinazione, farla scegliere all'utente
-//                        System.out.println("Finding an tram distributor on service...");
-//                        List<AutomaticDistributor> automaticDistributorsInService = dd.findAllDistributorsInService();
-//                        //  se la lista è vuota la riempiamo
-//                        if (automaticDistributorsInService.isEmpty()) {
-//                            for (int i = 0; i < 10; i++) {
-//                                Suppliers.automaticDistributorSupplier.get();
-//                            }
-//                        }
-//                        //prendiamo un index random della lista
-//                        int randomIndex = random.nextInt(automaticDistributorsInService.size());
-//                        distributor = automaticDistributorsInService.get(randomIndex);
+//                        commute= commuteList.get(0);
 //
-//                        System.out.println("Found one! Your distributor has ID: " + distributor.getId());
-////                        System.out.println(distributor);
 //                        break;
-//                    case 2:
-//                        System.out.println("Looking for an authorized near you...");
-//                        List<AuthorizedDistributor> authorizedDistributors = dd.findAuthorizedDistributors();
-//                        int randomIndex2 = random.nextInt(authorizedDistributors.size());
-//                        distributor = authorizedDistributors.get(randomIndex2);
-//                        System.out.println("Your distributor has ID: " + distributor.getId());
+//                        case 2:
+//                        commute= commuteList.get(1);
 //                        break;
-//                    case 0:
-//                        System.out.println("See you soon!");
-//                        return;
+//                        case 3:
+//                        commute= commuteList.get(2);
+//                        break;
+//                        case 4:
+//                        commute= commuteList.get(3);
+//                        break;
+//                        case 5:
+//                        commute= commuteList.get(4);
+//                        break;
+//
+//                    default:
+//                        System.out.println("Sorry, commute not found!");
+//
 //                }
+//
+//                System.out.println("Your destination is: " + commute.getTerminal() + ". departure is " + commute.getDeparture());
+//
+//
+//
+//
+//
+//
+//
+//
+////
+////                System.out.println();
+////                System.out.println("Which transportation do you wish to take?");
+////                System.out.println("1- Tram, 2- Bus");
+////
+////                int transportationChoice = getUserChoice(1, 2);
+////
+////                Transportation transportation = null;
+////                switch (transportationChoice) {
+////                    case 1:
+////                        // dobbiamo prendere tutti i tram nel DB, stampare su schermo la Destinazione, farla scegliere all'utente
+////                        System.out.println("Finding an tram distributor on service...");
+////                        List<AutomaticDistributor> automaticDistributorsInService = dd.findAllDistributorsInService();
+////                        //  se la lista è vuota la riempiamo
+////                        if (automaticDistributorsInService.isEmpty()) {
+////                            for (int i = 0; i < 10; i++) {
+////                                Suppliers.automaticDistributorSupplier.get();
+////                            }
+////                        }
+////                        //prendiamo un index random della lista
+////                        int randomIndex = random.nextInt(automaticDistributorsInService.size());
+////                        transportation = automaticDistributorsInService.get(randomIndex);
+////
+////                        System.out.println("Found one! Your distributor has ID: " + transportation.getId());
+//////                        System.out.println(distributor);
+////                        break;
+////                    case 2:
+////                        System.out.println("Looking for an authorized near you...");
+////                        List<AuthorizedDistributor> authorizedDistributors = dd.findAuthorizedDistributors();
+////                        int randomIndex2 = random.nextInt(authorizedDistributors.size());
+////                        transportation = authorizedDistributors.get(randomIndex2);
+////                        System.out.println("Your distributor has ID: " + transportation.getId());
+////                        break;
+////                    case 0:
+////                        System.out.println("See you soon!");
+////                        return;
+////                }
 //
 //                // richiesta dati per cercare user nel database
 //                // una volta che ci troviamo qui, siamo sicuri al 100% che abbiamo sia card attiva che user
@@ -478,20 +526,33 @@ public class Methods {
                     break;
             }
         }
+
+
     }
 
+    public  static void initializeDistributors() {
+        for (int i = 0; i < 5; i++) {
+            AuthorizedDistributor newDistributor = Suppliers.authorizedDistributorSupplier.get();
+            dd.save(newDistributor);
+            System.out.println("YIPPIEE");
+        }
+
+        for (int i = 0; i < 10; i++) {
+            AutomaticDistributor newDistributor = Suppliers.automaticDistributorSupplier.get();
+            dd.save(newDistributor);
+            System.out.println("YIPPIEE");
+        }
+    }
+
+
     public static void App() {
-//        for (int i = 0; i < 5; i++) {
-//            AuthorizedDistributor newDistributor = Suppliers.authorizedDistributorSupplier.get();
-//            dd.save(newDistributor);
-//            System.out.println("YIPPIEE");
-//        }
-//
-//        for (int i = 0; i < 5; i++) {
-//            AutomaticDistributor newDistributor = Suppliers.automaticDistributorSupplier.get();
-//            dd.save(newDistributor);
-//            System.out.println("YIPPIEE");
-//        }
+//        createCommutesAndTransportations();
+//        generateTravelTable();
+
+//        initializeDistributors();
+
+
+
 
 
 //        for (int i = 0; i < 10; i++) {
@@ -572,7 +633,7 @@ public class Methods {
                         checkValidMembership();
                         break;
                     case 4:
-//                        bookATravel();
+                     //  bookATravel();
                         break;
 
                     case 5:
