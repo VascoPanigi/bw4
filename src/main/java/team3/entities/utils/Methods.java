@@ -297,12 +297,12 @@ public class Methods {
 //            dd.save(newDistributor);
 //            System.out.println("YIPPIEE");
 //        }
-//
-//        for (int i = 0; i < 5; i++) {
-//            AutomaticDistributor newDistributor = Suppliers.automaticDistributorSupplier.get();
-//            dd.save(newDistributor);
-//            System.out.println("YIPPIEE");
-//        }
+
+        //  for (int i = 0; i < 5; i++) {
+        //      AutomaticDistributor newDistributor = Suppliers.automaticDistributorSupplier.get();
+        //      dd.save(newDistributor);
+        //      System.out.println("YIPPIEE");
+        //  }
 
 
         System.out.println("Welcome to our system!");
