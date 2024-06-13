@@ -11,6 +11,7 @@ import team3.entities.distributor.AuthorizedDistributor;
 import team3.entities.distributor.AutomaticDistributor;
 import team3.entities.distributor.Distributor;
 import team3.entities.transportation.Transportation;
+import team3.entities.travel.Travel;
 import team3.entities.travel_document.Membership;
 import team3.entities.user.UserClass;
 import team3.enums.MembershipPeriodicity;
@@ -29,6 +30,7 @@ public class Suppliers {
         return new Card(randomDate);
     };
     public static Supplier<AuthorizedDistributor> authorizedDistributorSupplier = AuthorizedDistributor::new;
+    public static Supplier<Travel> travelSupplier = () -> new Travel(60);
     static Random random = new Random();
     public static Supplier<Transportation> transportationSupplier = () -> {
         Transportation transportation = new Transportation();

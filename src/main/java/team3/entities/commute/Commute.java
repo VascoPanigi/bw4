@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "findAllCommutes", query = "SELECT c FROM Commute c"),
+})
 @Table(name = "commute")
 public class Commute {
     @Id
@@ -62,4 +65,13 @@ public class Commute {
         return commute_id;
     }
 
+    @Override
+    public String toString() {
+        return "Commute{" +
+                "commute_id=" + commute_id +
+                ", departure='" + departure + '\'' +
+                ", averageTravelTime=" + averageTravelTime +
+                ", terminal='" + terminal + '\'' +
+                '}';
+    }
 }

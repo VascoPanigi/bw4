@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import team3.entities.commute.Commute;
 import team3.entities.transportation.Transportation;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +15,9 @@ public class Travel {
     @GeneratedValue
     private UUID id;
 
+    private LocalDateTime departureTime;
+    private LocalDateTime arrivalTime;
+
     @ManyToOne
     @JoinColumn(name = "transportation_id")
     private Transportation transportation;
@@ -22,18 +26,19 @@ public class Travel {
     @JoinColumn(name = "commute_id")
     private Commute commute;
 
-    private int travelTime;
+    private long travelTime;
 
-    public Travel(int travelTime) {
-
+    public Travel(long travelTime) {
         this.travelTime = travelTime;
+        this.departureTime = null;
+        this.arrivalTime = null;
     }
 
-    public int getTravelTime() {
+    public long getTravelTime() {
         return travelTime;
     }
 
-    public void setTravelTime(int travelTime) {
+    public void setTravelTime(long travelTime) {
         this.travelTime = travelTime;
     }
 
@@ -47,5 +52,29 @@ public class Travel {
 
     public void setTransportation(Transportation transportation) {
         this.transportation = transportation;
+    }
+
+    public Commute getCommute() {
+        return commute;
+    }
+
+    public void setCommute(Commute commute) {
+        this.commute = commute;
+    }
+
+    public LocalDateTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalDateTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public LocalDateTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalDateTime departureTime) {
+        this.departureTime = departureTime;
     }
 }
