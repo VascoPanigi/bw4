@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "searchByTimeInterval", query = "SELECT m FROM Membership m WHERE m.starting_date >= :start_date AND m.starting_date <= :ending_date"),
+        @NamedQuery(name = "searchByTimeInterval", query = "SELECT m FROM Membership m WHERE m.starting_date >= :start_date AND m.starting_date <= :ending_date AND m.distributor = :distributor"),
         @NamedQuery(name = "findMembershipByCard", query = "SELECT m FROM Membership m WHERE m.card.id = :card "),
 })
 public class Membership extends TravelDocument {

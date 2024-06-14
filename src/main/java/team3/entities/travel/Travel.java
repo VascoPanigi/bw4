@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+
+@NamedQuery(name = "findByCommute", query = "SELECT t FROM Travel t WHERE t.commute = :commute")
 @Table(name = "travel")
 public class Travel {
 
@@ -27,6 +29,10 @@ public class Travel {
     private Commute commute;
 
     private long travelTime;
+
+    public Travel() {
+
+    }
 
     public Travel(long travelTime) {
         this.travelTime = travelTime;
@@ -76,5 +82,15 @@ public class Travel {
 
     public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Travel{" +
+                "travelTime=" + travelTime +
+                ", arrivalTime=" + arrivalTime +
+                ", departureTime=" + departureTime +
+                ", id=" + id +
+                '}';
     }
 }

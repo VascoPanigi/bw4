@@ -5,6 +5,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import team3.entities.card.Card;
 import team3.entities.travel_document.Membership;
+import team3.entities.travel_document.Ticket;
 import team3.exceptions.NotFoundException;
 
 import java.time.LocalDate;
@@ -66,5 +67,11 @@ public class CardDao {
         System.out.println("No valid membership has been found!\n");
 
         return false;
+    }
+
+    public List<Ticket> findValidTickets(Card card) {
+        TypedQuery<Ticket> userQuery = em.createNamedQuery("findValidTickets", Ticket.class);
+        userQuery.setParameter("card", card);
+        return userQuery.getResultList();
     }
 }

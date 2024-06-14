@@ -2,9 +2,12 @@ package team3.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team3.entities.transportation.DutyPeriod;
+import team3.entities.transportation.Transportation;
 import team3.exceptions.NotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class DutyPeriodDAO {
@@ -36,5 +39,16 @@ public class DutyPeriodDAO {
         em.remove(found);
         transaction.commit();
         System.out.println("The duty period with id: " + found.getId() + " has been eliminated from our system!");
+    }
+
+    public boolean isOnDuty(Transportation transportation) {
+        TypedQuery<DutyPeriod> query = em.createNamedQuery("isOnDuty", DutyPeriod.class);
+        query.setParameter("transportation", transportation);
+        List<DutyPeriod> result = query.getResultList();
+        if (result.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

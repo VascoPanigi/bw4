@@ -1,9 +1,6 @@
 package team3.entities.travel_document;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import team3.entities.card.Card;
 import team3.entities.distributor.Distributor;
 import team3.entities.transportation.Transportation;
@@ -13,7 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-//@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.isValid = :isValid")
+@NamedQuery(name = "findValidTickets", query = "SELECT t FROM Ticket t WHERE t.card_ticket = :card AND t.isValid = null")
 @Table(name = "Tickets")
 public class Ticket extends TravelDocument {
 
