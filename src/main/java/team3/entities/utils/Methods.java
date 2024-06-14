@@ -305,6 +305,8 @@ public class Methods {
                 if (nextTravel.isPresent()) {
                     System.out.println("The next available travel is at: " + nextTravel.get().getDepartureTime().format(formatter));
                     transportation = nextTravel.get().getTransportation();
+                    //System.out.println(transportation);
+//                    System.out.println(currentTime);
                 } else System.out.println("No available travels!");
 
 //                boolean hasValidMembership = cd.isValidMembership(user.getCard());
@@ -404,7 +406,7 @@ public class Methods {
                 long arrivalTime = random.nextLong(60, 300);
                 Travel newTravel = new Travel(arrivalTime);
                 newTravel.setDepartureTime(departureTimeForAllTravels);
-                newTravel.setArrivalTime(LocalDateTime.now().plusMinutes(arrivalTime));
+                newTravel.setArrivalTime(departureTimeForAllTravels.plusMinutes(arrivalTime));
                 Transportation randomTrans = transportationList.get(random.nextInt(0, transportationList.size()));
                 newTravel.setCommute(indexedCommute);
                 newTravel.setTransportation(randomTrans);
@@ -419,10 +421,10 @@ public class Methods {
         for (int i = 0; i < 5; i++) {
             Commute newCommute = Suppliers.commuteSupplier.get();
             cmd.save(newCommute);
-            System.out.println("daje roma");
+//            System.out.println("daje roma");
         }
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             Transportation newTransport = Suppliers.transportationSupplier.get();
             transportd.save(newTransport);
             boolean whoKnows = random.nextBoolean();
