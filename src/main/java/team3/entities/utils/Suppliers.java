@@ -194,11 +194,11 @@ public class Suppliers {
         // controllare il tipo dell-input
 
         System.out.println("Insert your name: ");
-        String name = scanner.nextLine().toLowerCase();
+        String name = scanner.nextLine().toLowerCase().trim();
         System.out.println();
 
         System.out.println("Insert your surname: ");
-        String surname = scanner.nextLine().toLowerCase();
+        String surname = scanner.nextLine().toLowerCase().trim();
         System.out.println();
 
         EntityTransaction transaction = em.getTransaction();
